@@ -1,56 +1,48 @@
 import { Spectrum } from "../Spectrum";
 
-export default fromSLV;
-
-function parseContent(content) {
+export function fromSIV(content) {
   let allLines = content.split(/[\r\n]+/);
   let sampleMeta = parseS(allLines.filter(line => line.match(/X S_/)));
   let instrumentMeta = parseV(allLines.filter(line => line.match(/X V_/)));
   let date = parseDate(allLines.filter(line => line.match(/X d_t/))[0]);
 
-  let parsed = [];
-  API.createData("content", content);
   let parts = content.split("WAVES	");
-
+  let spectra = [];
   for (let part of parts) {
     let lines = part.split(/[\r\n]+/);
     let ys = lines
       .filter(line => line.match(/^[\t 0-9.eE-]+$/))
       .map(line => Number(line));
     if (ys.length < 10) continue;
-    let analysis = {};
-    analysis.kind = lines[0].trim();
-    analyses.push(analysis);
+
+    let kind = lines[0].trim();
     let metaLines = lines
       .filter(line => line.match(/^X /))
       .map(line => line.substring(2));
     let axis = parseScale(metaLines[0], ys.length);
-    let note = parseNote(metaLines[1]);
+    if (!axis.x || !axis.x.unit === "V") {
+      console.log("Unknown X axis:", axis);
+      continue;
+    }
+    if (!axis.y || !axis.y.unit === "A") {
+      console.log("Unknown Y axis:", axis);
+      continue;
+    }
+    // let note = parseNote(metaLines[1]);
     let xs = axis.x.values;
-    analysis.xUnit = axis.x.unit;
-    analysis.yUnit = axis.y.unit;
     let data = {
       x: xs,
       y: ys
     };
-    analysis.chart = { data };
-    analysis.info = getInfo(data);
-    analysis.jcamp = convertToJcamp.fromJson(data, {
-      title: sampleMeta.cellname,
-      owner: "cheminfo",
-      origin: "manually",
-      type: "IV SPECTRUM",
-      xUnit: "V",
-      yUnit: "A",
-      info: {
-        ...sampleMeta,
-        ...instrumentMeta,
-        ...date
-      }
-    });
-  }
 
-  // console.log(content);
+    let meta = {
+      ...sampleMeta,
+      date,
+      ...instrumentMeta
+    };
+    spectra.push(new Spectrum(data, meta));
+  }
+  return spectra;
 }
 
 function parseDate(line) {
@@ -113,7 +105,6 @@ function parseNote(line) {
     if (!key) continue;
     result[key] = value;
   }
-  console.log(result);
 }
 
 function parseMeta(lines, options = {}) {
@@ -127,7 +118,7 @@ function parseScalePart(scale, nbValues) {
   let result = {};
   result.axis = parts[1];
   result.kind = parts[0];
-  result.unit = parts[4];
+  result.unit = parts[4].replace(/"/g, "");
   if (result.kind === "SetScale/P") {
     let from = Number(parts[2]);
     let step = Number(parts[3]);
@@ -157,29 +148,4 @@ function getFieldName(key) {
     IT: "powerIn"
   };
   return mapping[key] || key;
-}
-
-function getInfo(data) {
-  const { x, y } = data;
-  console.log({ x, y });
-  let x0 = { x: x[0], y: y[0] };
-  let y0 = { x: x[0], y: y[0] };
-  let max = { x: x[0], y: y[0] };
-  let power = { x, y: [] };
-  for (let i = 0; i < x.length; i++) {
-    if (Math.abs(y[i]) < Math.abs(y0.y)) {
-      y0.x = x[i];
-      y0.y = y[i];
-    }
-    if (Math.abs(x[i]) < Math.abs(x0.x)) {
-      x0.x = x[i];
-      x0.y = y[i];
-    }
-    power.y.push(x[i] * y[i]);
-    if (x[i] * y[i] < max.x * max.y) {
-      max.x = x[i];
-      max.y = y[i];
-    }
-  }
-  return { x0, y0, max, power };
 }

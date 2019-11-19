@@ -1,13 +1,11 @@
-import { ABSORBANCE, TRANSMITTANCE, PERCENT_TRANSMITTANCE } from '../constants';
-
 export function getAnnotations(spectrum, options = {}) {
-  const { fillColor = 'green', strokeColor = 'red', creationFct } = options;
+  const { fillColor = "green", strokeColor = "red", creationFct } = options;
   const peaks = spectrum.peaks;
   if (!peaks) return [];
-  let annotations = peaks.map((peak) => {
+  let annotations = peaks.map(peak => {
     var annotation = {
       line: 1,
-      type: 'rect',
+      type: "rect",
       strokeColor: strokeColor,
       strokeWidth: 0,
       fillColor: fillColor
@@ -37,13 +35,13 @@ function annotationTransmittance(annotation, peak, factor = 1) {
   annotation.label = [
     {
       text: String(peak.wavelength),
-      size: '12px',
-      anchor: 'middle',
-      color: 'red',
+      size: "12px",
+      anchor: "middle",
+      color: "red",
       position: {
         x: peak.wavelength,
         y: peak.transmittance * factor,
-        dy: '23px'
+        dy: "23px"
       }
     }
   ];
@@ -51,14 +49,14 @@ function annotationTransmittance(annotation, peak, factor = 1) {
     {
       x: peak.wavelength,
       y: peak.transmittance * factor,
-      dy: '10px',
-      dx: '-1px'
+      dy: "10px",
+      dx: "-1px"
     },
     {
       x: peak.wavelength,
       y: peak.transmittance * factor,
-      dy: '5px',
-      dx: '1px'
+      dy: "5px",
+      dx: "1px"
     }
   ];
 }
@@ -67,13 +65,13 @@ function annotationAbsorbance(annotation, peak) {
   annotation.label = [
     {
       text: String(peak.wavelength),
-      size: '18px',
-      anchor: 'middle',
-      color: 'red',
+      size: "18px",
+      anchor: "middle",
+      color: "red",
       position: {
         x: peak.wavelength,
         y: peak.absorbance,
-        dy: '-15px'
+        dy: "-15px"
       }
     }
   ];
@@ -81,14 +79,14 @@ function annotationAbsorbance(annotation, peak) {
     {
       x: peak.wavelength,
       y: peak.absorbance,
-      dy: '-10px',
-      dx: '-1px'
+      dy: "-10px",
+      dx: "-1px"
     },
     {
       x: peak.wavelength,
       y: peak.absorbance,
-      dy: '-5px',
-      dx: '1px'
+      dy: "-5px",
+      dx: "1px"
     }
   ];
 }

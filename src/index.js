@@ -1,3 +1,3 @@
 export { Spectrum } from "./Spectrum";
 export { Spectra } from "./Spectra";
-export { fromSLV } from "./from/slv";
+export { fromSIV } from "./from/fromSIV";
