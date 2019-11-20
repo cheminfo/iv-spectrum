@@ -1,6 +1,6 @@
 import { Spectrum } from "../Spectrum";
 
-export function fromSIV(content) {
+export default function fromSIV(content) {
   let allLines = content.split(/[\r\n]+/);
   let sampleMeta = parseS(allLines.filter(line => line.match(/X S_/)));
   let instrumentMeta = parseV(allLines.filter(line => line.match(/X V_/)));
@@ -20,14 +20,16 @@ export function fromSIV(content) {
       .filter(line => line.match(/^X /))
       .map(line => line.substring(2));
     let axis = parseScale(metaLines[0], ys.length);
-    if (!axis.x || !axis.x.unit === "V") {
+
+    if (!axis.x || axis.x.unit !== "V") {
       console.log("Unknown X axis:", axis);
       continue;
     }
-    if (!axis.y || !axis.y.unit === "A") {
+    if (!axis.y || axis.y.unit !== "A") {
       console.log("Unknown Y axis:", axis);
       continue;
     }
+    console.log(axis.x.unit, axis.y.unit);
     // let note = parseNote(metaLines[1]);
     let xs = axis.x.values;
     let data = {
@@ -38,6 +40,7 @@ export function fromSIV(content) {
     let meta = {
       ...sampleMeta,
       date,
+      experiment: kind,
       ...instrumentMeta
     };
     spectra.push(new Spectrum(data, meta));

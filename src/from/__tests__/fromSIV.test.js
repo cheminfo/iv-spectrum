@@ -3,10 +3,15 @@ import { join } from "path";
 
 import fromSIV from "../fromSIV";
 
-test("Parse a sIv", () => {
+test("fromSIV", () => {
   let siv = readFileSync(
     join(__dirname, "../../../testFiles/test.sIv"),
     "utf8"
   );
-  let result = fromSIV(siv);
+  let spectra = fromSIV(siv);
+
+  let experiments = spectra.map(spectrum => spectrum.meta.experiment);
+  console.log(experiments);
+  expect(spectra.length).toBe(4);
+  expect.console.log(result);
 });

@@ -7,7 +7,12 @@ import { Spectrum } from "../Spectrum";
  * @return {Spectrum} - New class element with the given data
  */
 export default function fromJcamp(jcamp) {
-  const converted = converter(jcamp, { xy: true, keepRecordsRegExp: /.*/ });
+  const converted = converter(jcamp, {
+    xy: true,
+    keepRecordsRegExp: /.*/,
+    canonicDataLabels: false,
+    dynamicTyping: true
+  });
 
   let data = converted.spectra[0].data[0];
   let info = converted.info;
