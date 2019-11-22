@@ -22,14 +22,13 @@ export default function fromSIV(content) {
     let axis = parseScale(metaLines[0], ys.length);
 
     if (!axis.x || axis.x.unit !== "V") {
-      console.log("Unknown X axis:", axis);
+      console.log("Unknown X axis:", axis.kind, axis.unit);
       continue;
     }
     if (!axis.y || axis.y.unit !== "A") {
-      console.log("Unknown Y axis:", axis);
+      console.log("Unknown Y axis:", axis.kind, axis.unit);
       continue;
     }
-    console.log(axis.x.unit, axis.y.unit);
     // let note = parseNote(metaLines[1]);
     let xs = axis.x.values;
     let data = {

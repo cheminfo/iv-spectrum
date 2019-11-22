@@ -11,7 +11,14 @@ test("fromSIV", () => {
   let spectra = fromSIV(siv);
 
   let experiments = spectra.map(spectrum => spectrum.meta.experiment);
-  console.log(experiments);
-  expect(spectra.length).toBe(4);
-  expect.console.log(result);
+  expect(experiments).toEqual([
+    "DarkCurrent",
+    "PhotoCurrent0",
+    "PhotoCurrent2",
+    "PhotoCurrent4"
+  ]);
+  let spectrum = spectra[0];
+  expect(spectrum.data.x.length).toBe(120);
+  expect(spectrum.data.y.length).toBe(120);
+  expect(Object.keys(spectrum.meta).length).toBe(18);
 });
