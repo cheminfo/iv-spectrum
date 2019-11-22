@@ -1,6 +1,6 @@
 import { Spectrum } from "../Spectrum";
 
-export default function fromSIV(content) {
+export function fromSIV(content) {
   let allLines = content.split(/[\r\n]+/);
   let sampleMeta = parseS(allLines.filter(line => line.match(/X S_/)));
   let instrumentMeta = parseV(allLines.filter(line => line.match(/X V_/)));

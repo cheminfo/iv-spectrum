@@ -1,7 +1,7 @@
 import { readFileSync } from "fs";
 import { join } from "path";
 
-import fromJcamp from "../fromJcamp";
+import { fromJcamp } from "../fromJcamp";
 import { exportAllDeclaration } from "@babel/types";
 
 test("fromJcamp", () => {

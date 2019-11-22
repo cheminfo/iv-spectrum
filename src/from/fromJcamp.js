@@ -6,7 +6,7 @@ import { Spectrum } from "../Spectrum";
  * @param {string} jcamp - String containing the JCAMP data
  * @return {Spectrum} - New class element with the given data
  */
-export default function fromJcamp(jcamp) {
+export function fromJcamp(jcamp) {
   const converted = converter(jcamp, {
     xy: true,
     keepRecordsRegExp: /.*/,
