@@ -1,5 +1,5 @@
-import { getAnnotations } from "./jsgraph/getAnnotations";
-import toJcamp from "./to/toJcamp";
+import { getAnnotations } from './jsgraph/getAnnotations';
+import toJcamp from './to/toJcamp';
 
 /**
  * Class allowing manipulate one UV spectrum
@@ -16,11 +16,11 @@ export class Spectrum {
   }
 
   getXLabel() {
-    return "Voltage [V]";
+    return 'Voltage [V]';
   }
 
   getYLabel() {
-    return "Intensity [A]";
+    return 'Intensity [A]';
   }
 }
 
@@ -28,8 +28,12 @@ Spectrum.prototype.getAnnotations = function(options) {
   return getAnnotations(this, options);
 };
 
-Spectrum.prototype.getData = function() {
-  return this.data;
+Spectrum.prototype.getData = function(options = {}) {
+  const { xFactor = 1, yFactor = 1 } = options;
+  return {
+    x: this.data.x.map(x => x * xFactor),
+    y: this.data.y.map(y => y * yFactor)
+  };
 };
 
 Spectrum.prototype.toJcamp = function() {

@@ -1,6 +1,6 @@
 export function getSpectraChart(spectra) {
   let chart = {
-    title: "UV spectra superimposition",
+    title: 'IV spectra superimposition',
     data: []
   };
   for (let spectrum of spectra) {

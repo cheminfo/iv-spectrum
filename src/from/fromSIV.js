@@ -1,4 +1,4 @@
-import { Spectrum } from "../Spectrum";
+import { Spectrum } from '../Spectrum';
 
 export function fromSIV(content) {
   let allLines = content.split(/[\r\n]+/);
@@ -6,10 +6,13 @@ export function fromSIV(content) {
   let instrumentMeta = parseV(allLines.filter(line => line.match(/X V_/)));
   let date = parseDate(allLines.filter(line => line.match(/X d_t/))[0]);
 
-  let parts = content.split("WAVES	");
+  let parts = content.split('WAVES	');
   let spectra = [];
+
+  console.log(parts);
   for (let part of parts) {
     let lines = part.split(/[\r\n]+/);
+    console.log(lines.length);
     let ys = lines
       .filter(line => line.match(/^[\t 0-9.eE-]+$/))
       .map(line => Number(line));
@@ -19,14 +22,15 @@ export function fromSIV(content) {
     let metaLines = lines
       .filter(line => line.match(/^X /))
       .map(line => line.substring(2));
+    console.log(metaLines);
     let axis = parseScale(metaLines[0], ys.length);
 
-    if (!axis.x || axis.x.unit !== "V") {
-      console.log("Unknown X axis:", axis.kind, axis.unit);
+    if (!axis.x || axis.x.unit !== 'V') {
+      console.log('Unknown X axis:', axis.kind, axis.unit);
       continue;
     }
-    if (!axis.y || axis.y.unit !== "A") {
-      console.log("Unknown Y axis:", axis.kind, axis.unit);
+    if (!axis.y || axis.y.unit !== 'A') {
+      console.log('Unknown Y axis:', axis.kind, axis.unit);
       continue;
     }
     // let note = parseNote(metaLines[1]);
@@ -49,19 +53,22 @@ export function fromSIV(content) {
 
 function parseDate(line) {
   let dateString = line
-    .replace("X d_t=", "")
+    .replace('X d_t=', '')
     .trim()
-    .replace(/"/g, "");
+    .replace(/"/g, '');
   let date = new Date(dateString);
   return date;
 }
 
 function parseScale(line, nbValues) {
   let result = {};
-  line = line.replace(/ ([xy]) /g, ",$1,");
-  let parts = line.split("; ");
+  line = line.replace(/ ([xy]) /g, ',$1,');
+  let parts = line.split('; ');
+  console.log('---------');
+  console.log(parts);
   for (let part of parts) {
     let parsedPart = parseScalePart(part, nbValues);
+    console.log(parsedPart);
     result[parsedPart.axis] = parsedPart;
   }
   return result;
@@ -70,10 +77,10 @@ function parseScale(line, nbValues) {
 function parseS(lines) {
   let result = {};
   for (let line of lines) {
-    let key = line.replace(/X ._([^=]*)=(.*)/, "$1").trim();
+    let key = line.replace(/X ._([^=]*)=(.*)/, '$1').trim();
     key = getFieldName(key);
-    let value = line.replace(/X ._([^=]*)=(.*)/, "$2").trim();
-    value = value.replace(/^"(.*)"$/, "$1");
+    let value = line.replace(/X ._([^=]*)=(.*)/, '$2').trim();
+    value = value.replace(/^"(.*)"$/, '$1');
     if (!isNaN(value)) value = Number(value);
     result[key] = value;
   }
@@ -83,10 +90,10 @@ function parseS(lines) {
 function parseV(lines) {
   let result = {};
   for (let line of lines) {
-    let key = line.replace(/X ._([^=]*)=(.*)/, "$1").trim();
+    let key = line.replace(/X ._([^=]*)=(.*)/, '$1').trim();
     key = getFieldName(key);
-    let value = line.replace(/X ._([^=]*)=(.*)/, "$2").trim();
-    value = value.replace(/^"(.*)"$/, "$1");
+    let value = line.replace(/X ._([^=]*)=(.*)/, '$2').trim();
+    value = value.replace(/^"(.*)"$/, '$1');
     if (!isNaN(value)) value = Number(value);
     result[key] = value;
   }
@@ -94,15 +101,15 @@ function parseV(lines) {
 }
 
 function parseNote(line) {
-  line = line.replace(/"/g, "").replace(/\\r/g, ";");
+  line = line.replace(/"/g, '').replace(/\\r/g, ';');
   let parts = line.split(/ *[;,] */);
   let result = {};
   for (let part of parts) {
-    let semiColumn = part.indexOf(":");
+    let semiColumn = part.indexOf(':');
     let key = part.substring(0, semiColumn);
     key = getFieldName(key);
     let value = part.substring(semiColumn + 1).trim();
-    value = value.replace(/^"(.*)"$/, "$1");
+    value = value.replace(/^"(.*)"$/, '$1');
     if (!isNaN(value)) value = Number(value);
     if (!key) continue;
     result[key] = value;
@@ -116,12 +123,12 @@ function parseMeta(lines, options = {}) {
 }
 
 function parseScalePart(scale, nbValues) {
-  let parts = scale.split(",");
+  let parts = scale.split(',');
   let result = {};
   result.axis = parts[1];
   result.kind = parts[0];
-  result.unit = parts[4].replace(/"/g, "");
-  if (result.kind === "SetScale/P") {
+  result.unit = parts[4].replace(/"/g, '');
+  if (result.kind === 'SetScale/P') {
     let from = Number(parts[2]);
     let step = Number(parts[3]);
     let values = [];
@@ -136,18 +143,18 @@ function parseScalePart(scale, nbValues) {
 
 function getFieldName(key) {
   const mapping = {
-    CE: "counterElectrodeType",
-    Calibrationfile: "calibrationFile",
-    Username: "username",
-    WE: "workingElectrodeGlass",
-    cellname: "cellname",
-    electrolyte: "electrolyteZ960",
-    layer: "semicondutorLayer",
-    specification: "remarks",
-    temp: "workingTemperature",
-    type: "typeOfCell",
-    AR: "cellActiveArea",
-    IT: "powerIn"
+    CE: 'counterElectrodeType',
+    Calibrationfile: 'calibrationFile',
+    Username: 'username',
+    WE: 'workingElectrodeGlass',
+    cellname: 'cellname',
+    electrolyte: 'electrolyteZ960',
+    layer: 'semicondutorLayer',
+    specification: 'remarks',
+    temp: 'workingTemperature',
+    type: 'typeOfCell',
+    AR: 'cellActiveArea',
+    IT: 'powerIn'
   };
   return mapping[key] || key;
 }
