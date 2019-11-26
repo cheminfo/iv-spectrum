@@ -33,15 +33,15 @@
     "testEnvironment": "node"
   },
   "devDependencies": {
-    "@babel/types": "^7.7.2",
+    "@babel/types": "^7.7.4",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
     "codecov": "^3.6.1",
-    "eslint": "^6.6.0",
+    "eslint": "^6.7.1",
     "eslint-config-cheminfo": "^2.0.4",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-jest": "^23.0.4",
     "jest": "^24.9.0",
-    "rollup": "^1.27.2"
+    "rollup": "^1.27.5"
   },
   "dependencies": {
     "convert-to-jcamp": "^1.1.3",
