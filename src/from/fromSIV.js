@@ -23,12 +23,14 @@ export function fromSIV(content) {
 
     let axis = parseScale(metaLines[0], ys.length);
 
-    if (!axis.x || axis.x.unit !== 'V') {
+    console.log(axis);
+
+    if (axis.x === undefined || axis.x.unit !== 'V') {
       // eslint-disable-next-line no-console
       console.log('Unknown X axis:', axis.kind, axis.unit);
       continue;
     }
-    if (!axis.y || axis.y.unit !== 'A') {
+    if (axis.y === undefined || axis.y.unit !== 'A') {
       // eslint-disable-next-line no-console
       console.log('Unknown Y axis:', axis.kind, axis.unit);
       continue;
@@ -46,6 +48,7 @@ export function fromSIV(content) {
       experiment: kind,
       ...instrumentMeta,
     };
+    console.log({ meta });
     spectra.push(new Spectrum(data.x, data.y, spectra.length + 1, { meta }));
   }
   return spectra;
