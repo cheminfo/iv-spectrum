@@ -1,4 +1,3 @@
-import { getAnnotations } from './jsgraph/getAnnotations';
 import toJcamp from './to/toJcamp';
 
 /**
@@ -9,10 +8,19 @@ import toJcamp from './to/toJcamp';
  * @param {Array} [data.y=[]] - intensity
  */
 export class Spectrum {
-  constructor(data = { x: [], y: [] }, meta = {}, id = Math.random()) {
-    this.data = data;
-    this.meta = meta;
+  constructor(x, y, id, options = {}) {
+    const { meta = {} } = options;
+
+    if (x && x.length > 1 && x[0] > x[1]) {
+      this.x = x.reverse();
+      this.y = y.reverse();
+    } else {
+      this.x = x || [];
+      this.y = y || [];
+    }
+
     this.id = id;
+    this.meta = meta;
   }
 
   getXLabel() {
@@ -24,16 +32,8 @@ export class Spectrum {
   }
 }
 
-Spectrum.prototype.getAnnotations = function(options) {
-  return getAnnotations(this, options);
-};
-
-Spectrum.prototype.getData = function(options = {}) {
-  const { xFactor = 1, yFactor = 1 } = options;
-  return {
-    x: this.data.x.map(x => x * xFactor),
-    y: this.data.y.map(y => y * yFactor)
-  };
+Spectrum.prototype.getData = function() {
+  return { x: this.x, y: this.y };
 };
 
 Spectrum.prototype.toJcamp = function() {

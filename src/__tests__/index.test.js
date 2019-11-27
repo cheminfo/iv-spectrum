@@ -1,10 +1,9 @@
 import { readFileSync } from 'fs';
 import { join } from 'path';
 
-import { fromSIV } from '..';
-import { fromJcamp } from '..';
+import { fromSIV, fromJcamp } from '..';
 
-test('Test load / save jcamp', () => {
+test('load / save jcamp', () => {
   let text = readFileSync(join(__dirname, '../../testFiles/test.sIv'), 'utf8');
   let spectra = fromSIV(text);
   let jcamp = spectra[0].toJcamp();

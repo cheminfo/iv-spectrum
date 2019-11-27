@@ -14,7 +14,7 @@
     "eslint": "eslint src",
     "eslint-fix": "npm run eslint -- --fix",
     "prepublishOnly": "rollup -c",
-    "test": "npm run test-only && pm run eslint",
+    "test": "npm run test-only && npm run eslint",
     "test-travis": "eslint src && jest --coverage && codecov",
     "test-only": "jest"
   },
@@ -40,7 +40,9 @@
     "eslint-config-cheminfo": "^2.0.4",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-jest": "^23.0.4",
+    "eslint-plugin-prettier": "^3.1.1",
     "jest": "^24.9.0",
+    "prettier": "^1.19.1",
     "rollup": "^1.27.5"
   },
   "dependencies": {

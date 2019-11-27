@@ -2,34 +2,34 @@ import { Spectrum } from '../Spectrum';
 
 export function fromSIV(content) {
   let allLines = content.split(/[\r\n]+/);
-  let sampleMeta = parseS(allLines.filter(line => line.match(/X S_/)));
-  let instrumentMeta = parseV(allLines.filter(line => line.match(/X V_/)));
-  let date = parseDate(allLines.filter(line => line.match(/X d_t/))[0]);
+  let sampleMeta = parseS(allLines.filter((line) => line.match(/X S_/)));
+  let instrumentMeta = parseV(allLines.filter((line) => line.match(/X V_/)));
+  let date = parseDate(allLines.filter((line) => line.match(/X d_t/))[0]);
 
-  let parts = content.split('WAVES	');
+  let parts = content.split('WAVES\t');
   let spectra = [];
 
-  console.log(parts);
   for (let part of parts) {
     let lines = part.split(/[\r\n]+/);
-    console.log(lines.length);
     let ys = lines
-      .filter(line => line.match(/^[\t 0-9.eE-]+$/))
-      .map(line => Number(line));
+      .filter((line) => line.match(/^[\t 0-9.eE-]+$/))
+      .map((line) => Number(line));
     if (ys.length < 10) continue;
 
     let kind = lines[0].trim();
     let metaLines = lines
-      .filter(line => line.match(/^X /))
-      .map(line => line.substring(2));
-    console.log(metaLines);
+      .filter((line) => line.match(/^X /))
+      .map((line) => line.substring(2));
+
     let axis = parseScale(metaLines[0], ys.length);
 
     if (!axis.x || axis.x.unit !== 'V') {
+      // eslint-disable-next-line no-console
       console.log('Unknown X axis:', axis.kind, axis.unit);
       continue;
     }
     if (!axis.y || axis.y.unit !== 'A') {
+      // eslint-disable-next-line no-console
       console.log('Unknown Y axis:', axis.kind, axis.unit);
       continue;
     }
@@ -37,16 +37,16 @@ export function fromSIV(content) {
     let xs = axis.x.values;
     let data = {
       x: xs,
-      y: ys
+      y: ys,
     };
 
     let meta = {
       ...sampleMeta,
       date,
       experiment: kind,
-      ...instrumentMeta
+      ...instrumentMeta,
     };
-    spectra.push(new Spectrum(data, meta));
+    spectra.push(new Spectrum(data.x, data.y, spectra.length + 1, { meta }));
   }
   return spectra;
 }
@@ -64,11 +64,9 @@ function parseScale(line, nbValues) {
   let result = {};
   line = line.replace(/ ([xy]) /g, ',$1,');
   let parts = line.split('; ');
-  console.log('---------');
-  console.log(parts);
+
   for (let part of parts) {
     let parsedPart = parseScalePart(part, nbValues);
-    console.log(parsedPart);
     result[parsedPart.axis] = parsedPart;
   }
   return result;
@@ -100,6 +98,7 @@ function parseV(lines) {
   return result;
 }
 
+// eslint-disable-next-line no-unused-vars
 function parseNote(line) {
   line = line.replace(/"/g, '').replace(/\\r/g, ';');
   let parts = line.split(/ *[;,] */);
@@ -113,12 +112,6 @@ function parseNote(line) {
     if (!isNaN(value)) value = Number(value);
     if (!key) continue;
     result[key] = value;
-  }
-}
-
-function parseMeta(lines, options = {}) {
-  let result = {};
-  for (let line of lines) {
   }
 }
 
@@ -154,7 +147,7 @@ function getFieldName(key) {
     temp: 'workingTemperature',
     type: 'typeOfCell',
     AR: 'cellActiveArea',
-    IT: 'powerIn'
+    IT: 'powerIn',
   };
   return mapping[key] || key;
 }
