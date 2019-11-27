@@ -23,6 +23,7 @@ export function fromSIV(content) {
 
     let axis = parseScale(metaLines[0], ys.length);
 
+    // removing the following line corrupt the build ???!!!
     console.log(axis);
 
     if (axis.x === undefined || axis.x.unit !== 'V') {
