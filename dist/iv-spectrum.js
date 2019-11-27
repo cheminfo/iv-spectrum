@@ -1,6 +1,6 @@
 /**
  * iv-spectrum
- * @version v0.0.5
+ * @version v0.1.0
  * @link https://github.com/cheminfo/iv-spectrum#readme
  * @license MIT
  */
@@ -146,12 +146,6 @@ module.exports = uniqueX;
 "use strict";
 
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { keys.push.apply(keys, Object.getOwnPropertySymbols(object)); } if (enumerableOnly) keys = keys.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
@@ -160,109 +154,20 @@ var convertToJcamp = __webpack_require__(3);
 
 var jcampconverter = __webpack_require__(2);
 
-function getAnnotations(spectrum) {
-  let options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-  const {
-    fillColor = "green",
-    strokeColor = "red",
-    creationFct
-  } = options;
-  const peaks = spectrum.peaks;
-  if (!peaks) return [];
-  let annotations = peaks.map(peak => {
-    var annotation = {
-      line: 1,
-      type: "rect",
-      strokeColor: strokeColor,
-      strokeWidth: 0,
-      fillColor: fillColor
-    };
-
-    if (creationFct) {
-      creationFct(annotation, peak);
-    }
-
-    switch (spectrum.mode) {
-      case ABSORBANCE:
-        annotationAbsorbance(annotation, peak);
-        break;
-
-      case TRANSMITTANCE:
-        annotationTransmittance(annotation, peak, 1);
-        break;
-
-      case PERCENT_TRANSMITTANCE:
-        annotationTransmittance(annotation, peak, 100);
-        break;
-    }
-
-    return annotation;
-  });
-  return annotations;
-}
-
-function annotationTransmittance(annotation, peak) {
-  let factor = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1;
-  annotation.label = [{
-    text: String(peak.wavelength),
-    size: "12px",
-    anchor: "middle",
-    color: "red",
-    position: {
-      x: peak.wavelength,
-      y: peak.transmittance * factor,
-      dy: "23px"
-    }
-  }];
-  annotation.position = [{
-    x: peak.wavelength,
-    y: peak.transmittance * factor,
-    dy: "10px",
-    dx: "-1px"
-  }, {
-    x: peak.wavelength,
-    y: peak.transmittance * factor,
-    dy: "5px",
-    dx: "1px"
-  }];
-}
-
-function annotationAbsorbance(annotation, peak) {
-  annotation.label = [{
-    text: String(peak.wavelength),
-    size: "18px",
-    anchor: "middle",
-    color: "red",
-    position: {
-      x: peak.wavelength,
-      y: peak.absorbance,
-      dy: "-15px"
-    }
-  }];
-  annotation.position = [{
-    x: peak.wavelength,
-    y: peak.absorbance,
-    dy: "-10px",
-    dx: "-1px"
-  }, {
-    x: peak.wavelength,
-    y: peak.absorbance,
-    dy: "-5px",
-    dx: "1px"
-  }];
-}
-
 function toJcamp(spectrum) {
   let meta = {
     // title: spectrum.sampleMeta.cellname,
-    owner: "",
-    origin: "",
-    type: "IV curve",
-    xUnit: "difference in electric potential [V]",
-    yUnit: "intensity [A]",
+    owner: '',
+    origin: '',
+    type: 'IV curve',
+    xUnit: 'difference in electric potential [V]',
+    yUnit: 'intensity [A]',
     info: spectrum.meta
   };
-  return convertToJcamp.fromJson(spectrum.data, meta);
+  return convertToJcamp.fromJson({
+    x: spectrum.x,
+    y: spectrum.y
+  }, meta);
 }
 /**
  * Class allowing manipulate one UV spectrum
@@ -274,39 +179,36 @@ function toJcamp(spectrum) {
 
 
 class Spectrum {
-  constructor() {
-    let data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
-      x: [],
-      y: []
-    };
-    let meta = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-    let id = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : Math.random();
-    this.data = data;
+  constructor(x, y, id, options = {}) {
+    const _options$meta = options.meta,
+          meta = _options$meta === void 0 ? {} : _options$meta;
+
+    if (x && x.length > 1 && x[0] > x[1]) {
+      this.x = x.reverse();
+      this.y = y.reverse();
+    } else {
+      this.x = x || [];
+      this.y = y || [];
+    }
+
+    this.id = id;
+    this.meta = meta;
   }
 
   getXLabel() {
-    return "Voltage [V]";
+    return 'Voltage [V]';
   }
 
   getYLabel() {
-    return "Intensity [A]";
+    return 'Intensity [A]';
   }
 
 }
 
-Spectrum.prototype.getAnnotations = function (options) {
-  return getAnnotations(this, options);
-};
-
 Spectrum.prototype.getData = function () {
-  let options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-  const {
-    xFactor = 1,
-    yFactor = 1
-  } = options;
   return {
-    x: this.data.x.map(x => x * xFactor),
-    y: this.data.y.map(y => y * yFactor)
+    x: this.x,
+    y: this.y
   };
 };
 
@@ -314,96 +216,26 @@ Spectrum.prototype.toJcamp = function () {
   return toJcamp(this);
 };
 
-class Spectra {
-  constructor() {
-    this.data = [];
-  }
-  /**
-   * Add a spectrum
-   * @param {Spectrum} spectrum
-   * @param {string} id
-   * @param {object} [meta={}]
-   */
-
-
-  addSpectrum(spectrum, id) {
-    let meta = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    let index = this.getSpectrumIndex(id);
-    if (index === undefined) index = this.data.length;
-    this.data[index] = {
-      spectrum,
-      id,
-      meta
-    };
-  }
-
-  removeSpectrum(id) {
-    let index = this.getSpectrumIndex(id);
-    if (index === undefined) return undefined;
-    return this.data.splice(index, 1);
-  }
-
-  setMeta(id, meta) {
-    let index = this.getSpectrumIndex(id);
-    if (index === undefined) return undefined;
-    this.data[index].meta = meta;
-  }
-
-  getSpectrumIndex(id) {
-    if (!id) return undefined;
-
-    for (let i = 0; i < this.data.length; i++) {
-      let spectrum = this.data[i];
-      if (spectrum.id === id) return i;
-    }
-
-    return undefined;
-  }
-
-}
-
 function fromSIV(content) {
   let allLines = content.split(/[\r\n]+/);
   let sampleMeta = parseS(allLines.filter(line => line.match(/X S_/)));
   let instrumentMeta = parseV(allLines.filter(line => line.match(/X V_/)));
   let date = parseDate(allLines.filter(line => line.match(/X d_t/))[0]);
-  let parts = content.split('WAVES	');
+  let parts = content.split('WAVES\t');
   let spectra = [];
-  console.log(parts);
 
   for (let part of parts) {
     let lines = part.split(/[\r\n]+/);
-    console.log(lines.length);
     let ys = lines.filter(line => line.match(/^[\t 0-9.eE-]+$/)).map(line => Number(line));
     if (ys.length < 10) continue;
     let kind = lines[0].trim();
     let metaLines = lines.filter(line => line.match(/^X /)).map(line => line.substring(2));
-    console.log(metaLines);
     let axis = parseScale(metaLines[0], ys.length);
-
-    if (!axis.x || axis.x.unit !== 'V') {
+    {
+      // eslint-disable-next-line no-console
       console.log('Unknown X axis:', axis.kind, axis.unit);
       continue;
     }
-
-    if (!axis.y || axis.y.unit !== 'A') {
-      console.log('Unknown Y axis:', axis.kind, axis.unit);
-      continue;
-    } // let note = parseNote(metaLines[1]);
-
-
-    let xs = axis.x.values;
-    let data = {
-      x: xs,
-      y: ys
-    };
-
-    let meta = _objectSpread({}, sampleMeta, {
-      date,
-      experiment: kind
-    }, instrumentMeta);
-
-    spectra.push(new Spectrum(data, meta));
   }
 
   return spectra;
@@ -419,12 +251,9 @@ function parseScale(line, nbValues) {
   let result = {};
   line = line.replace(/ ([xy]) /g, ',$1,');
   let parts = line.split('; ');
-  console.log('---------');
-  console.log(parts);
 
   for (let part of parts) {
     let parsedPart = parseScalePart(part, nbValues);
-    console.log(parsedPart);
     result[parsedPart.axis] = parsedPart;
   }
 
@@ -507,7 +336,7 @@ function getFieldName(key) {
  */
 
 
-function fromJcamp(jcamp) {
+function fromJcamp(jcamp, id) {
   const converted = jcampconverter.convert(jcamp, {
     xy: true,
     keepRecordsRegExp: /.*/,
@@ -518,14 +347,15 @@ function fromJcamp(jcamp) {
   let info = converted.info;
   let meta = {};
 
-  for (let key of Object.keys(info).filter(key => key.startsWith("$"))) {
+  for (let key of Object.keys(info).filter(key => key.startsWith('$'))) {
     meta[key.substr(1)] = info[key];
   }
 
-  return new Spectrum(data, meta);
+  return new Spectrum(data.x, data.y, id, {
+    meta
+  });
 }
 
-exports.Spectra = Spectra;
 exports.Spectrum = Spectrum;
 exports.fromJcamp = fromJcamp;
 exports.fromSIV = fromSIV;
@@ -1478,7 +1308,7 @@ function getConverter() {
           currentData.push(parseFloat(values[j + 1]) * spectrum.yFactor);
         }
       } else {
-        result.logs.push("Format error: ".concat(values));
+        result.logs.push(`Format error: ${values}`);
       }
     }
   }
@@ -1510,7 +1340,7 @@ function postToWorker(input, options) {
   }
 
   return new Promise(function (resolve) {
-    let stamp = "".concat(Date.now()).concat(Math.random());
+    let stamp = `${Date.now()}${Math.random()}`;
     stamps[stamp] = resolve;
     worker.postMessage(JSON.stringify({
       stamp: stamp,
@@ -1521,7 +1351,7 @@ function postToWorker(input, options) {
 }
 
 function createWorker() {
-  let workerURL = URL.createObjectURL(new Blob(["var getConverter =".concat(getConverter.toString(), ";var convert = getConverter(); onmessage = function (event) { var data = JSON.parse(event.data); postMessage(JSON.stringify({stamp: data.stamp, output: convert(data.input, data.options)})); };")], {
+  let workerURL = URL.createObjectURL(new Blob([`var getConverter =${getConverter.toString()};var convert = getConverter(); onmessage = function (event) { var data = JSON.parse(event.data); postMessage(JSON.stringify({stamp: data.stamp, output: convert(data.input, data.options)})); };`], {
     type: 'application/javascript'
   }));
   worker = new Worker(workerURL);
@@ -1536,11 +1366,9 @@ function createWorker() {
   });
 }
 
-function createTree(jcamp) {
-  let options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-  const {
-    flatten = false
-  } = options;
+function createTree(jcamp, options = {}) {
+  const _options$flatten = options.flatten,
+        flatten = _options$flatten === void 0 ? false : _options$flatten;
 
   if (typeof jcamp !== 'string') {
     throw new TypeError('the JCAMP should be a string');
@@ -1575,13 +1403,13 @@ function createTree(jcamp) {
 
       stack.push({
         title: title.join('\n'),
-        jcamp: "".concat(line, "\n"),
+        jcamp: `${line}\n`,
         children: []
       });
       current = stack[stack.length - 1];
       flat.push(current);
     } else if (labelLine.substring(0, 5) === '##END' && ntupleLevel === 0) {
-      current.jcamp += "".concat(line, "\n");
+      current.jcamp += `${line}\n`;
       let finished = stack.pop();
 
       if (stack.length !== 0) {
@@ -1592,7 +1420,7 @@ function createTree(jcamp) {
         result.push(finished);
       }
     } else if (current && current.jcamp) {
-      current.jcamp += "".concat(line, "\n");
+      current.jcamp += `${line}\n`;
       let match = labelLine.match(/^##(.*?)=(.+)/);
 
       if (match) {
@@ -1631,7 +1459,7 @@ module.exports = {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 
-// EXTERNAL MODULE: ./node_modules/convert-to-jcamp/node_modules/ml-arrayxy-uniquex/src/index.js
+// EXTERNAL MODULE: ./node_modules/ml-arrayxy-uniquex/src/index.js
 var src = __webpack_require__(0);
 var src_default = /*#__PURE__*/__webpack_require__.n(src);
 
@@ -1654,22 +1482,27 @@ var src_default = /*#__PURE__*/__webpack_require__.n(src);
  * @return {Array<Array<number>>} - check the 'arrayType' option
  */
 
-function parseXY(text) {
-  let options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-  const {
-    normalize = false,
-    uniqueX = false,
-    arrayType = 'xyxy',
-    xColumn = 0,
-    yColumn = 1,
-    keepInfo = false,
-    maxNumberColumns = Math.max(xColumn, yColumn) + 1,
-    minNumberColumns = Math.max(xColumn, yColumn) + 1
-  } = options;
+function parseXY(text, options = {}) {
+  const _options$normalize = options.normalize,
+        normalize = _options$normalize === void 0 ? false : _options$normalize,
+        _options$uniqueX = options.uniqueX,
+        uniqueX = _options$uniqueX === void 0 ? false : _options$uniqueX,
+        _options$arrayType = options.arrayType,
+        arrayType = _options$arrayType === void 0 ? 'xyxy' : _options$arrayType,
+        _options$xColumn = options.xColumn,
+        xColumn = _options$xColumn === void 0 ? 0 : _options$xColumn,
+        _options$yColumn = options.yColumn,
+        yColumn = _options$yColumn === void 0 ? 1 : _options$yColumn,
+        _options$keepInfo = options.keepInfo,
+        keepInfo = _options$keepInfo === void 0 ? false : _options$keepInfo,
+        _options$maxNumberCol = options.maxNumberColumns,
+        maxNumberColumns = _options$maxNumberCol === void 0 ? Math.max(xColumn, yColumn) + 1 : _options$maxNumberCol,
+        _options$minNumberCol = options.minNumberColumns,
+        minNumberColumns = _options$minNumberCol === void 0 ? Math.max(xColumn, yColumn) + 1 : _options$minNumberCol;
   var lines = text.split(/[\r\n]+/);
 
   if (arrayType !== 'xxyy' && arrayType !== 'xyxy') {
-    throw new Error("unsupported arrayType (".concat(arrayType, ")"));
+    throw new Error(`unsupported arrayType (${arrayType})`);
   }
 
   var maxY = Number.MIN_VALUE;
@@ -1787,18 +1620,16 @@ function fromGeneral(data) {
   }
 }
 // CONCATENATED MODULE: ./node_modules/ml-xy-convert/src/to.js
-function toXxyyArray(_ref) {
-  let {
-    x,
-    y
-  } = _ref;
+function toXxyyArray({
+  x,
+  y
+}) {
   return [x, y];
 }
-function toXyxyArray(_ref2) {
-  let {
-    x,
-    y
-  } = _ref2;
+function toXyxyArray({
+  x,
+  y
+}) {
   var ans = [];
 
   for (var index = 0; index < x.length; index++) {
@@ -1807,11 +1638,10 @@ function toXyxyArray(_ref2) {
 
   return ans;
 }
-function toXyxyObject(_ref3) {
-  let {
-    x,
-    y
-  } = _ref3;
+function toXyxyObject({
+  x,
+  y
+}) {
   var ans = [];
 
   for (var index = 0; index < x.length; index++) {
@@ -1835,12 +1665,10 @@ function toXyxyObject(_ref3) {
  * @return {*} - output set of points
  */
 
-function xyConvert(data) {
-  let options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-  const {
-    inputFormat,
-    outputFormat = 'xxyyObject'
-  } = options;
+function xyConvert(data, options = {}) {
+  const inputFormat = options.inputFormat,
+        _options$outputFormat = options.outputFormat,
+        outputFormat = _options$outputFormat === void 0 ? 'xxyyObject' : _options$outputFormat;
   if (inputFormat === outputFormat) return data;
   let middleData;
 
@@ -1881,7 +1709,7 @@ function xyConvert(data) {
       return toXyxyObject(middleData);
 
     default:
-      throw new TypeError("unknown output format ".concat(outputFormat));
+      throw new TypeError(`unknown output format ${outputFormat}`);
   }
 }
 // CONCATENATED MODULE: ./node_modules/convert-to-jcamp/src/creator.js
@@ -1891,17 +1719,21 @@ function xyConvert(data) {
  * @param {object} [meta] - same metadata object format that the convertToJcamp
  * @return {string} JCAMP of the input
  */
-function creator(data) {
-  let meta = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-  const {
-    title = '',
-    owner = '',
-    origin = '',
-    type = '',
-    xUnit = '',
-    yUnit = '',
-    info = {}
-  } = meta;
+function creator(data, meta = {}) {
+  const _meta$title = meta.title,
+        title = _meta$title === void 0 ? '' : _meta$title,
+        _meta$owner = meta.owner,
+        owner = _meta$owner === void 0 ? '' : _meta$owner,
+        _meta$origin = meta.origin,
+        origin = _meta$origin === void 0 ? '' : _meta$origin,
+        _meta$type = meta.type,
+        type = _meta$type === void 0 ? '' : _meta$type,
+        _meta$xUnit = meta.xUnit,
+        xUnit = _meta$xUnit === void 0 ? '' : _meta$xUnit,
+        _meta$yUnit = meta.yUnit,
+        yUnit = _meta$yUnit === void 0 ? '' : _meta$yUnit,
+        _meta$info = meta.info,
+        info = _meta$info === void 0 ? {} : _meta$info;
   let firstX = Number.MAX_VALUE;
   let lastX = Number.MIN_VALUE;
   let firstY = Number.MAX_VALUE;
@@ -1930,17 +1762,30 @@ function creator(data) {
       }
     }
 
-    points.push("".concat(x, " ").concat(y));
+    points.push(`${x} ${y}`);
   }
 
-  var header = "##TITLE=".concat(title, "\n##JCAMP-DX=4.24\n##DATA TYPE=").concat(type, "\n##ORIGIN=").concat(origin, "\n##OWNER=").concat(owner, "\n##XUNITS=").concat(xUnit, "\n##YUNITS=").concat(yUnit, "\n##FIRSTX=").concat(firstX, "\n##LASTX=").concat(lastX, "\n##FIRSTY=").concat(firstY, "\n##LASTY=").concat(lastY, "\n");
+  var header = `##TITLE=${title}
+##JCAMP-DX=4.24
+##DATA TYPE=${type}
+##ORIGIN=${origin}
+##OWNER=${owner}
+##XUNITS=${xUnit}
+##YUNITS=${yUnit}
+##FIRSTX=${firstX}
+##LASTX=${lastX}
+##FIRSTY=${firstY}
+##LASTY=${lastY}\n`;
 
   for (const key of Object.keys(info)) {
-    header += "##$".concat(key, "=").concat(info[key], "\n");
+    header += `##$${key}=${info[key]}\n`;
   } // we leave the header and utf8 fonts ${header.replace(/[^\t\r\n\x20-\x7F]/g, '')
 
 
-  return "".concat(header, "##NPOINTS=").concat(points.length, "\n##PEAK TABLE=(XY..XY)\n").concat(points.join('\n'), "\n##END");
+  return `${header}##NPOINTS=${points.length}
+##PEAK TABLE=(XY..XY)
+${points.join('\n')}
+##END`;
 }
 // CONCATENATED MODULE: ./node_modules/convert-to-jcamp/src/index.js
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return convertToJcamp; });
@@ -1964,12 +1809,11 @@ function creator(data) {
  * @return {string} JCAMP of the input
  */
 
-function convertToJcamp(data) {
-  let options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-  const {
-    meta = {},
-    parserOptions = {}
-  } = options;
+function convertToJcamp(data, options = {}) {
+  const _options$meta = options.meta,
+        meta = _options$meta === void 0 ? {} : _options$meta,
+        _options$parserOption = options.parserOptions,
+        parserOptions = _options$parserOption === void 0 ? {} : _options$parserOption;
   parserOptions.arrayType = 'xyxy';
   parserOptions.keepInfo = true;
   var parsed = parseXY(data, parserOptions);
@@ -1985,8 +1829,7 @@ function convertToJcamp(data) {
  * @return {string} JCAMP of the input
  */
 
-function fromJson(data) {
-  let meta = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+function fromJson(data, meta = {}) {
   const parsed = xyConvert(data, {
     outputFormat: 'xyxyArray'
   });

@@ -1,6 +1,6 @@
 {
   "name": "iv-spectrum",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "description": "",
   "main": "lib/index.js",
   "module": "src/index.js",
@@ -39,7 +39,7 @@
     "eslint": "^6.7.1",
     "eslint-config-cheminfo": "^2.0.4",
     "eslint-plugin-import": "^2.18.2",
-    "eslint-plugin-jest": "^23.0.4",
+    "eslint-plugin-jest": "^23.0.5",
     "eslint-plugin-prettier": "^3.1.1",
     "jest": "^24.9.0",
     "prettier": "^1.19.1",
