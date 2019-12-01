@@ -9,11 +9,12 @@
     "src"
   ],
   "scripts": {
-    "build": "rollup -c && cheminfo build --root IVSpectrum --no-uglify",
+    "compile": "rollup -c",
+    "build": "cheminfo-build --root IVSpectrum",
     "build-doc": "cheminfo doc",
     "eslint": "eslint src",
     "eslint-fix": "npm run eslint -- --fix",
-    "prepublishOnly": "rollup -c",
+    "prepublishOnly": "npm run compile",
     "test": "npm run test-only && npm run eslint",
     "test-travis": "eslint src && jest --coverage && codecov",
     "test-only": "jest"
@@ -33,17 +34,16 @@
     "testEnvironment": "node"
   },
   "devDependencies": {
-    "@babel/plugin-transform-modules-commonjs": "^7.7.4",
-    "@babel/types": "^7.7.4",
+    "cheminfo-build": "^1.0.4",
     "codecov": "^3.6.1",
-    "eslint": "^6.7.1",
+    "eslint": "^6.7.2",
     "eslint-config-cheminfo": "^2.0.4",
     "eslint-plugin-import": "^2.18.2",
-    "eslint-plugin-jest": "^23.0.5",
+    "eslint-plugin-jest": "^23.1.1",
     "eslint-plugin-prettier": "^3.1.1",
     "jest": "^24.9.0",
     "prettier": "^1.19.1",
-    "rollup": "^1.27.5"
+    "rollup": "^1.27.6"
   },
   "dependencies": {
     "convert-to-jcamp": "^1.1.3",
