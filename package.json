@@ -34,7 +34,7 @@
     "testEnvironment": "node"
   },
   "devDependencies": {
-    "cheminfo-build": "^1.0.4",
+    "cheminfo-build": "^1.0.5",
     "codecov": "^3.6.1",
     "eslint": "^6.7.2",
     "eslint-config-cheminfo": "^2.0.4",
