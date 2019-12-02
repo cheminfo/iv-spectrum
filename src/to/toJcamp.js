@@ -1,4 +1,4 @@
-import { fromJson } from 'convert-to-jcamp';
+import { fromJSON } from 'convert-to-jcamp';
 
 export default function toJcamp(spectrum) {
   let meta = {
@@ -11,5 +11,5 @@ export default function toJcamp(spectrum) {
     info: spectrum.meta,
   };
 
-  return fromJson({ x: spectrum.x, y: spectrum.y }, meta);
+  return fromJSON({ x: spectrum.x, y: spectrum.y }, meta);
 }

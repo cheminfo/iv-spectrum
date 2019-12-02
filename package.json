@@ -46,7 +46,8 @@
     "rollup": "^1.27.8"
   },
   "dependencies": {
-    "convert-to-jcamp": "^1.2.0",
+    "@babel/plugin-transform-modules-commonjs": "^7.7.4",
+    "convert-to-jcamp": "^2.0.0",
     "jcampconverter": "^4.1.0",
     "ml-array-max": "^1.1.2",
     "ml-array-min": "^1.1.2",
