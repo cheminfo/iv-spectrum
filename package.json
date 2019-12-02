@@ -9,12 +9,10 @@
     "src"
   ],
   "scripts": {
-    "compile": "rollup -c",
-    "build": "cheminfo-build --root IVSpectrum",
+    "build": "rollup -c && cheminfo-build --root IVSpectrum",
     "build-doc": "cheminfo doc",
     "eslint": "eslint src",
     "eslint-fix": "npm run eslint -- --fix",
-    "prepublishOnly": "npm run compile",
     "test": "npm run test-only && npm run eslint",
     "test-travis": "eslint src && jest --coverage && codecov",
     "test-only": "jest"
