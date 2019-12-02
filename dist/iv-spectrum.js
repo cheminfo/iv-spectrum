@@ -1,6 +1,6 @@
 /**
  * iv-spectrum
- * @version v0.2.0
+ * @version v0.2.1
  * @link https://github.com/cheminfo/iv-spectrum#readme
  * @license MIT
  */
