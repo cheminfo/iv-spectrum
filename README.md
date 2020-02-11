@@ -17,27 +17,6 @@
 import IVSpectrum from 'iv-spectrum';
 
 let spectrum = IVSpectrum.fromJcamp(jcamp);
-
-// let spectrum = IVSpectrum.fromText(jcamp);
-
-spectrum.setPeaks([]);
-
-// if optimize is true, peak picking will find the best peak close to wavelength
-spectrum.peakPicking(wavelength, { range: 0, optimize: true });
-console.log(spectrum.peaks());
-
-spectrum.autoPeakPicking({
-  fromWavelength: 1500,
-  toWavelength: 4000,
-  noiseLvel: 0.01,
-});
-
-// you may selecdt how you would like to retrieve the data
-// there are 3 modes: ABSORBANCE, TRANSMITTANCE or PERCENT_TRANSMITTANCE
-// those methods are very practical in coordination with www.jsgraph.org
-spectrum.setMode(IVSpectrum.ABSORBANCE);
-let annotations = spectrum.getAnnotations();
-let data = spectrum.getData();
 ```
 
 ## [API Documentation](https://cheminfo.github.io/iv-spectrum/)
