@@ -17,7 +17,7 @@ export function fromJcamp(jcamp, id) {
   let data = converted.spectra[0].data[0];
   let info = converted.info;
   let meta = {};
-  for (let key of Object.keys(info).filter((key) => key.startsWith('$'))) {
+  for (let key of Object.keys(info).filter((item) => item.startsWith('$'))) {
     meta[key.substr(1)] = info[key];
   }
   return new Spectrum(data.x, data.y, id, { meta });

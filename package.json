@@ -33,24 +33,24 @@
   },
   "devDependencies": {
     "cheminfo-build": "^1.0.5",
-    "codecov": "^3.6.1",
-    "eslint": "^6.7.2",
+    "codecov": "^3.6.5",
+    "eslint": "^6.8.0",
     "eslint-config-cheminfo": "^2.0.4",
-    "eslint-plugin-import": "^2.18.2",
-    "eslint-plugin-jest": "^23.1.1",
-    "eslint-plugin-prettier": "^3.1.1",
-    "jest": "^24.9.0",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-jest": "^23.7.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "jest": "^25.1.0",
     "prettier": "^1.19.1",
-    "rollup": "^1.27.8"
+    "rollup": "^1.31.0"
   },
   "dependencies": {
-    "@babel/plugin-transform-modules-commonjs": "^7.7.4",
+    "@babel/plugin-transform-modules-commonjs": "^7.8.3",
     "convert-to-jcamp": "^2.0.0",
     "jcampconverter": "^4.1.0",
     "ml-array-max": "^1.1.2",
     "ml-array-min": "^1.1.2",
     "ml-array-utils": "^0.4.0",
-    "ml-array-xy-equally-spaced": "^1.0.2",
+    "ml-array-xy-equally-spaced": "^1.1.1",
     "xy-parser": "^3.0.0"
   }
 }
