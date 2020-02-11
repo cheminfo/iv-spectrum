@@ -14,11 +14,11 @@
 ## Usage
 
 ```js
-import IRSpectrum from 'iv-spectrum';
+import IVSpectrum from 'iv-spectrum';
 
-let spectrum = IRSpectrum.fromJcamp(jcamp);
+let spectrum = IVSpectrum.fromJcamp(jcamp);
 
-// let spectrum = IRSpectrum.fromText(jcamp);
+// let spectrum = IVSpectrum.fromText(jcamp);
 
 spectrum.setPeaks([]);
 
@@ -35,7 +35,7 @@ spectrum.autoPeakPicking({
 // you may selecdt how you would like to retrieve the data
 // there are 3 modes: ABSORBANCE, TRANSMITTANCE or PERCENT_TRANSMITTANCE
 // those methods are very practical in coordination with www.jsgraph.org
-spectrum.setMode(IRSpectrum.ABSORBANCE);
+spectrum.setMode(IVSpectrum.ABSORBANCE);
 let annotations = spectrum.getAnnotations();
 let data = spectrum.getData();
 ```
