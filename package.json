@@ -41,11 +41,11 @@
     "eslint-plugin-prettier": "^3.1.2",
     "jest": "^25.1.0",
     "prettier": "^1.19.1",
-    "rollup": "^1.31.0"
+    "rollup": "^1.31.1"
   },
   "dependencies": {
     "@babel/plugin-transform-modules-commonjs": "^7.8.3",
-    "convert-to-jcamp": "^2.0.0",
+    "convert-to-jcamp": "^2.0.1",
     "jcampconverter": "^4.1.0",
     "ml-array-max": "^1.1.2",
     "ml-array-min": "^1.1.2",
