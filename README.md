@@ -16,7 +16,9 @@
 ```js
 import IVSpectrum from 'iv-spectrum';
 
-let spectrum = IVSpectrum.fromJcamp(jcamp);
+let analysis = IVSpectrum.fromJcamp(jcamp);
+
+
 ```
 
 ## [API Documentation](https://cheminfo.github.io/iv-spectrum/)
