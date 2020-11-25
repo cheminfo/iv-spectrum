@@ -1,13 +1,14 @@
-import { Spectrum } from '../Spectrum';
+import { Analysis } from '..';
 
 export function fromSIV(content) {
+  let analysis = new Analysis();
+
   let allLines = content.split(/[\r\n]+/);
   let sampleMeta = parseS(allLines.filter((line) => line.match(/X S_/)));
   let instrumentMeta = parseV(allLines.filter((line) => line.match(/X V_/)));
   let date = parseDate(allLines.filter((line) => line.match(/X d_t/))[0]);
 
   let parts = content.split('WAVES\t');
-  let spectra = [];
 
   for (let part of parts) {
     let lines = part.split(/[\r\n]+/);
@@ -23,7 +24,7 @@ export function fromSIV(content) {
 
     let axis = parseScale(metaLines[0], ys.length);
 
-    if (axis.x === undefined || axis.x.unit !== 'V') {
+    if (axis.x === undefined) {
       // eslint-disable-next-line no-console
       console.log('Unknown X axis:', axis.kind, axis.unit);
       continue;
@@ -33,6 +34,7 @@ export function fromSIV(content) {
       console.log('Unknown Y axis:', axis.kind, axis.unit);
       continue;
     }
+
     // let note = parseNote(metaLines[1]);
     let xs = axis.x.values;
     let data = {
@@ -46,16 +48,29 @@ export function fromSIV(content) {
       experiment: kind,
       ...instrumentMeta,
     };
-    spectra.push(new Spectrum(data.x, data.y, spectra.length + 1, { meta }));
+    analysis.pushSpectrum(
+      {
+        x: {
+          type: 'independent',
+          label: axis.x.kind,
+          unit: axis.x.unit,
+          data: data.x,
+        },
+        y: {
+          type: 'dependent',
+          label: axis.y.kind,
+          unit: axis.y.unit,
+          data: data.y,
+        },
+      },
+      { dataType: 'IV spectrum', title: '', meta },
+    );
   }
-  return spectra;
+  return analysis;
 }
 
 function parseDate(line) {
-  let dateString = line
-    .replace('X d_t=', '')
-    .trim()
-    .replace(/"/g, '');
+  let dateString = line.replace('X d_t=', '').trim().replace(/"/g, '');
   let date = new Date(dateString);
   return date;
 }
