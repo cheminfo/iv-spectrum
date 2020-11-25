@@ -14,7 +14,6 @@
     "eslint": "eslint src",
     "eslint-fix": "npm run eslint -- --fix",
     "test": "npm run test-only && npm run eslint",
-    "test-travis": "eslint src && jest --coverage && codecov",
     "test-only": "jest"
   },
   "repository": {
