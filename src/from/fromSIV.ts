@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { Analysis } from 'common-spectrum';
 
 export function fromSIV(content: string) {
@@ -25,12 +26,10 @@ export function fromSIV(content: string) {
     const axis = parseScale(metaLines[0], ys.length);
 
     if (axis.x === undefined) {
-      // eslint-disable-next-line no-console
       console.log('Unknown X axis:', axis.kind, axis.unit);
       continue;
     }
     if (axis.y === undefined || axis.y.unit !== 'A') {
-      // eslint-disable-next-line no-console
       console.log('Unknown Y axis:', axis.kind, axis.unit);
       continue;
     }
@@ -75,7 +74,7 @@ function parseDate(line: string) {
 }
 
 function parseScale(line: string, nbValues: number) {
-  let result = {};
+  let result: Record<string, PartType> = {};
   const parts = line.replace(/ ([xy]) /g, ',$1,').split('; ');
 
   for (const part of parts) {
@@ -86,26 +85,28 @@ function parseScale(line: string, nbValues: number) {
 }
 
 function parseS(lines: string[]) {
-  let result = {};
+  let result: Record<string, number | string> = {};
   for (const line of lines) {
-    let key = line.replace(/X ._([^=]*)=(.*)/, '$1').trim();
-    key = getFieldName(key);
-    let value = line.replace(/X ._([^=]*)=(.*)/, '$2').trim();
-    value = value.replace(/^"(.*)"$/, '$1');
-    if (!isNaN(value)) value = Number(value);
+    const key = getFieldName(line.replace(/X ._([^=]*)=(.*)/, '$1').trim());
+    let value: number | string = line
+      .replace(/X ._([^=]*)=(.*)/, '$2')
+      .trim()
+      .replace(/^"(.*)"$/, '$1');
+    if (!isNaN(Number(value))) value = Number(value);
     result[key] = value;
   }
   return result;
 }
 
 function parseV(lines: string[]) {
-  let result = {};
+  let result: Record<string, string | number> = {};
   for (const line of lines) {
-    let key = line.replace(/X ._([^=]*)=(.*)/, '$1').trim();
-    key = getFieldName(key);
-    let value = line.replace(/X ._([^=]*)=(.*)/, '$2').trim();
-    value = value.replace(/^"(.*)"$/, '$1');
-    if (!isNaN(value)) value = Number(value);
+    const key = getFieldName(line.replace(/X ._([^=]*)=(.*)/, '$1').trim());
+    let value: string | number = line
+      .replace(/X ._([^=]*)=(.*)/, '$2')
+      .trim()
+      .replace(/^"(.*)"$/, '$1');
+    if (!isNaN(Number(value))) value = Number(value);
     result[key] = value;
   }
   return result;
@@ -115,34 +116,42 @@ function parseV(lines: string[]) {
 function parseNote(line: string) {
   line = line.replace(/"/g, '').replace(/\\r/g, ';');
   const parts = line.split(/ *[;,] */);
-  let result = {};
+  let result: Record<string, string | number> = {};
   for (const part of parts) {
     const semiColumn = part.indexOf(':');
-    let key = part.substring(0, semiColumn);
-    key = getFieldName(key);
-    let value = part.substring(semiColumn + 1).trim();
-    value = value.replace(/^"(.*)"$/, '$1');
+    const key = getFieldName(part.substring(0, semiColumn));
+    let value: string | number = part
+      .substring(semiColumn + 1)
+      .trim()
+      .replace(/^"(.*)"$/, '$1');
     if (!isNaN(Number(value))) value = Number(value);
     if (!key) continue;
     result[key] = value;
   }
 }
 
-function parseScalePart(scale: string, nbValues: number) {
+interface PartType {
+  axis: string;
+  kind: string;
+  unit: string;
+  values?: number[];
+}
+function parseScalePart(scale: string, nbValues: number): PartType {
   const parts = scale.split(',');
-  let result = {};
-  result.axis = parts[1];
-  result.kind = parts[0];
-  result.unit = parts[4].replace(/"/g, '');
+  let result: PartType = {
+    axis: parts[1],
+    kind: parts[0],
+    unit: parts[4].replace(/"/g, ''),
+  };
   if (result.kind === 'SetScale/P') {
     let from = Number(parts[2]);
     const step = Number(parts[3]);
     const values = [];
-    for (const i = 0; i < nbValues; i++) {
+    for (let i = 0; i < nbValues; i++) {
       values.push(from);
       from += step;
-      result.values = values;
     }
+    result.values = values;
   }
   return result;
 }
@@ -162,5 +171,6 @@ function getFieldName(key: string) {
     AR: 'cellActiveArea',
     IT: 'powerIn',
   };
-  return mapping[key] || key;
+  if (key in mapping) return mapping[key as keyof typeof mapping];
+  return key;
 }

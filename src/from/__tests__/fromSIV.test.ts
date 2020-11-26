@@ -10,9 +10,7 @@ test('fromSIV', () => {
   );
   let analysis = fromSIV(siv);
 
-  let experiments = analysis.spectra.map(
-    (spectrum) => spectrum.meta.experiment,
-  );
+  const experiments = analysis.spectra.map(({ meta }: any) => meta.experiment);
   expect(experiments).toStrictEqual([
     'DarkCurrent',
     'PhotoCurrent0',
@@ -20,7 +18,7 @@ test('fromSIV', () => {
     'PhotoCurrent4',
     'transient0',
   ]);
-  let spectrum = analysis.spectra[0];
+  const spectrum = analysis.spectra[0];
   expect(spectrum.variables.x.data).toHaveLength(120);
   expect(spectrum.variables.y.data).toHaveLength(120);
   expect(Object.keys(spectrum.meta)).toHaveLength(18);
