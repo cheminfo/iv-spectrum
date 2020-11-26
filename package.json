@@ -14,7 +14,7 @@
     "lib-esm"
   ],
   "scripts": {
-    "build": "rollup -c && cheminfo-build --root IVSpectrum",
+    "build": "npm run tsc && cheminfo-build --root IVSpectrum",
     "build-doc": "cheminfo doc",
     "clean": "rimraf lib lib-esm",
     "eslint": "eslint src --ext ts --cache",
