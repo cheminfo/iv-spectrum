@@ -1,28 +1,28 @@
 import { Analysis } from 'common-spectrum';
 
-export function fromSIV(content) {
-  let analysis = new Analysis();
+export function fromSIV(content: string) {
+  const analysis = new Analysis();
 
-  let allLines = content.split(/[\r\n]+/);
-  let sampleMeta = parseS(allLines.filter((line) => line.match(/X S_/)));
-  let instrumentMeta = parseV(allLines.filter((line) => line.match(/X V_/)));
-  let date = parseDate(allLines.filter((line) => line.match(/X d_t/))[0]);
+  const allLines = content.split(/[\r\n]+/);
+  const sampleMeta = parseS(allLines.filter((line) => /X S_/.exec(line)));
+  const instrumentMeta = parseV(allLines.filter((line) => /X V_/.exec(line)));
+  const date = parseDate(allLines.filter((line) => /X d_t/.exec(line))[0]);
 
-  let parts = content.split('WAVES\t');
+  const parts = content.split('WAVES\t');
 
-  for (let part of parts) {
-    let lines = part.split(/[\r\n]+/);
-    let ys = lines
-      .filter((line) => line.match(/^[\t 0-9.eE-]+$/))
+  for (const part of parts) {
+    const lines = part.split(/[\r\n]+/);
+    const ys = lines
+      .filter((line) => /^[\t 0-9.eE-]+$/.exec(line))
       .map((line) => Number(line));
     if (ys.length < 10) continue;
 
-    let kind = lines[0].trim();
-    let metaLines = lines
-      .filter((line) => line.match(/^X /))
+    const kind = lines[0].trim();
+    const metaLines = lines
+      .filter((line) => /^X /.exec(line))
       .map((line) => line.substring(2));
 
-    let axis = parseScale(metaLines[0], ys.length);
+    const axis = parseScale(metaLines[0], ys.length);
 
     if (axis.x === undefined) {
       // eslint-disable-next-line no-console
@@ -35,14 +35,14 @@ export function fromSIV(content) {
       continue;
     }
 
-    // let note = parseNote(metaLines[1]);
-    let xs = axis.x.values;
-    let data = {
+    // const note = parseNote(metaLines[1]);
+    const xs = axis.x.values;
+    const data = {
       x: xs,
       y: ys,
     };
 
-    let meta = {
+    const meta = {
       ...sampleMeta,
       date,
       experiment: kind,
@@ -69,27 +69,25 @@ export function fromSIV(content) {
   return analysis;
 }
 
-function parseDate(line) {
-  let dateString = line.replace('X d_t=', '').trim().replace(/"/g, '');
-  let date = new Date(dateString);
-  return date;
+function parseDate(line: string) {
+  const dateString = line.replace('X d_t=', '').trim().replace(/"/g, '');
+  return new Date(dateString);
 }
 
-function parseScale(line, nbValues) {
+function parseScale(line: string, nbValues: number) {
   let result = {};
-  line = line.replace(/ ([xy]) /g, ',$1,');
-  let parts = line.split('; ');
+  const parts = line.replace(/ ([xy]) /g, ',$1,').split('; ');
 
-  for (let part of parts) {
-    let parsedPart = parseScalePart(part, nbValues);
+  for (const part of parts) {
+    const parsedPart = parseScalePart(part, nbValues);
     result[parsedPart.axis] = parsedPart;
   }
   return result;
 }
 
-function parseS(lines) {
+function parseS(lines: string[]) {
   let result = {};
-  for (let line of lines) {
+  for (const line of lines) {
     let key = line.replace(/X ._([^=]*)=(.*)/, '$1').trim();
     key = getFieldName(key);
     let value = line.replace(/X ._([^=]*)=(.*)/, '$2').trim();
@@ -100,9 +98,9 @@ function parseS(lines) {
   return result;
 }
 
-function parseV(lines) {
+function parseV(lines: string[]) {
   let result = {};
-  for (let line of lines) {
+  for (const line of lines) {
     let key = line.replace(/X ._([^=]*)=(.*)/, '$1').trim();
     key = getFieldName(key);
     let value = line.replace(/X ._([^=]*)=(.*)/, '$2').trim();
@@ -113,34 +111,34 @@ function parseV(lines) {
   return result;
 }
 
-// eslint-disable-next-line no-unused-vars
-function parseNote(line) {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function parseNote(line: string) {
   line = line.replace(/"/g, '').replace(/\\r/g, ';');
-  let parts = line.split(/ *[;,] */);
+  const parts = line.split(/ *[;,] */);
   let result = {};
-  for (let part of parts) {
-    let semiColumn = part.indexOf(':');
+  for (const part of parts) {
+    const semiColumn = part.indexOf(':');
     let key = part.substring(0, semiColumn);
     key = getFieldName(key);
     let value = part.substring(semiColumn + 1).trim();
     value = value.replace(/^"(.*)"$/, '$1');
-    if (!isNaN(value)) value = Number(value);
+    if (!isNaN(Number(value))) value = Number(value);
     if (!key) continue;
     result[key] = value;
   }
 }
 
-function parseScalePart(scale, nbValues) {
-  let parts = scale.split(',');
+function parseScalePart(scale: string, nbValues: number) {
+  const parts = scale.split(',');
   let result = {};
   result.axis = parts[1];
   result.kind = parts[0];
   result.unit = parts[4].replace(/"/g, '');
   if (result.kind === 'SetScale/P') {
     let from = Number(parts[2]);
-    let step = Number(parts[3]);
-    let values = [];
-    for (let i = 0; i < nbValues; i++) {
+    const step = Number(parts[3]);
+    const values = [];
+    for (const i = 0; i < nbValues; i++) {
       values.push(from);
       from += step;
       result.values = values;
@@ -149,7 +147,7 @@ function parseScalePart(scale, nbValues) {
   return result;
 }
 
-function getFieldName(key) {
+function getFieldName(key: string) {
   const mapping = {
     CE: 'counterElectrodeType',
     Calibrationfile: 'calibrationFile',
