@@ -1,4 +1,4 @@
-import { Analysis } from '..';
+import { Analysis } from 'common-spectrum';
 
 export function fromSIV(content) {
   let analysis = new Analysis();
