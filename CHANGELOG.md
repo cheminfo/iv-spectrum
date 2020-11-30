@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://www.github.com/cheminfo/iv-spectrum/compare/v0.3.0...v0.4.0) (2020-11-30)
+
+
+### Features
+
+* add parsers from powerlab cases ([#3](https://www.github.com/cheminfo/iv-spectrum/issues/3)) ([f417c3a](https://www.github.com/cheminfo/iv-spectrum/commit/f417c3a949e472cbf5112ea07de2bb6d58be1a70))
+
 ## [0.3.0](https://www.github.com/cheminfo/iv-spectrum/compare/v0.2.2...v0.3.0) (2020-11-27)
 
 
