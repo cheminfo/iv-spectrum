@@ -3,7 +3,7 @@ interface DataType {
   y: number[];
 }
 
-export default function getInfo({ x, y }: DataType) {
+export function getInfo({ x, y }: DataType) {
   let x0 = { x: x[0], y: y[0] };
   let y0 = { x: x[0], y: y[0] };
   let max = { x: x[0], y: y[0] };
@@ -24,4 +24,8 @@ export default function getInfo({ x, y }: DataType) {
     }
   }
   return { x0, y0, max, power };
+}
+
+export function toNumber(value: string) {
+  return isNaN(Number(value)) ? value : Number(value);
 }
