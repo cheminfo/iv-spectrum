@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://www.github.com/cheminfo/iv-spectrum/compare/v0.4.0...v0.5.0) (2020-12-03)
+
+
+### Features
+
+* add units based on label ([#5](https://www.github.com/cheminfo/iv-spectrum/issues/5)) ([f472de5](https://www.github.com/cheminfo/iv-spectrum/commit/f472de5d19f6b37fc010542fbfdce4f03e663156))
+
 ## [0.4.0](https://www.github.com/cheminfo/iv-spectrum/compare/v0.3.0...v0.4.0) (2020-11-30)
 
 
