@@ -29,3 +29,31 @@ export function getInfo({ x, y }: DataType) {
 export function toNumber(value: string) {
   return isNaN(Number(value)) ? value : Number(value);
 }
+
+interface SeriesType {
+  data: number[];
+  label: string;
+  units?: string;
+}
+
+const units: Record<string, string> = {
+  C: 'F',
+  I: 'A',
+  V: 'V',
+  R: 'Ohm',
+  G: 'S',
+  Q: 'C',
+  F: 'Hz',
+  T: 's',
+};
+export function appendUnits(data: Record<string, SeriesType>) {
+  for (const key in data) {
+    const { label } = data[key];
+    const unit = units[label.trim()[0].toUpperCase()] || undefined;
+    if (unit) {
+      const isDens = /dens/.exec(label);
+      data[key].units = isDens !== null ? `${unit}/mm` : unit;
+    }
+  }
+  return data;
+}

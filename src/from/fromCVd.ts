@@ -1,7 +1,7 @@
 import { Analysis } from 'common-spectrum';
 import { ndParse } from 'ndim-parser';
 
-import { toNumber } from '../utils';
+import { appendUnits, toNumber } from '../utils';
 
 function parseMeta(meta: Record<string, string>): Record<string, unknown> {
   if (!meta) return {};
@@ -32,7 +32,7 @@ export function fromCVd(text: string) {
   const parsedMeta = parseMeta(meta);
 
   let analysis = new Analysis();
-  analysis.pushSpectrum(data, {
+  analysis.pushSpectrum(appendUnits(data), {
     title: parsedMeta['Setup title'],
     meta: parsedMeta,
   });
