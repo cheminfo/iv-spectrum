@@ -1,7 +1,7 @@
 import { Analysis } from 'common-spectrum';
 import { ndParse } from 'ndim-parser';
 
-import { toNumber } from '../utils';
+import { appendUnits, toNumber } from '../utils';
 
 function parseMeta(meta: Record<string, string>): Record<string, unknown> {
   if (!meta) return {};
@@ -41,7 +41,7 @@ export function fromMulChannelCap(text: string) {
   }
 
   let analysis = new Analysis();
-  analysis.pushSpectrum(data, {
+  analysis.pushSpectrum(appendUnits(data), {
     title: `Vg=${data.g.data[0]}V`,
     meta: parseMeta(meta),
   });
