@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.5.1](https://www.github.com/cheminfo/iv-spectrum/compare/v0.5.0...v0.5.1) (2020-12-03)
+
+
+### Bug Fixes
+
+* export missing parsers ([08b160c](https://www.github.com/cheminfo/iv-spectrum/commit/08b160cd50f02f190ab6daacb07731905d881121))
+
 ## [0.5.0](https://www.github.com/cheminfo/iv-spectrum/compare/v0.4.0...v0.5.0) (2020-12-03)
 
 
