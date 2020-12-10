@@ -26,7 +26,7 @@ function keyMapper(keys: string[]) {
   });
 }
 
-export function fromMulChannelCap(text: string) {
+export function fromMulChannelCap(text: string, analysis?: Analysis) {
   const { data, meta } = ndParse(text, keyMapper);
 
   const min = Object.values(data).reduce(
@@ -40,11 +40,13 @@ export function fromMulChannelCap(text: string) {
     }
   }
 
-  let analysis = new Analysis();
-  analysis.pushSpectrum(appendUnits(data), {
-    title: `Vg=${data.g.data[0]}V`,
-    meta: parseMeta(meta),
+  const vg = data.g.data[0];
+
+  let result = analysis || new Analysis();
+  result.pushSpectrum(appendUnits(data), {
+    title: `Vg=${vg}V`,
+    meta: { ...parseMeta(meta), Vg: vg },
   });
 
-  return analysis;
+  return result;
 }
