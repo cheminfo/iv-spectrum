@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.6.0](https://www.github.com/cheminfo/iv-spectrum/compare/v0.5.1...v0.6.0) (2020-12-14)
+
+
+### Features
+
+* export react plot generator ([4d39e23](https://www.github.com/cheminfo/iv-spectrum/commit/4d39e232264b4b392bc6352f58dd52fb60559364))
+
+
+### Bug Fixes
+
+* update dependecies changes ([c1a2507](https://www.github.com/cheminfo/iv-spectrum/commit/c1a25070506ade866c55d22cc820fd5444d7fdf7))
+
 ### [0.5.1](https://www.github.com/cheminfo/iv-spectrum/compare/v0.5.0...v0.5.1) (2020-12-03)
 
 
