@@ -17,7 +17,7 @@ function parseMeta(meta: Record<string, string>): Record<string, unknown> {
   return ans;
 }
 
-function keyMapper(keys: string[]) {
+function keyMap(keys: string[]) {
   return keys.map((key, index) => {
     if (key === 'Vd') return 'x';
     if (key === 'Id') return 'y';
@@ -27,7 +27,7 @@ function keyMapper(keys: string[]) {
 }
 
 export function fromMulChannelCap(text: string) {
-  const { data, meta } = ndParse(text, keyMapper);
+  const { data, meta } = ndParse(text, { keyMap });
 
   const min = Object.values(data).reduce(
     (prev, curr) => Math.min(curr.data.length, prev),
