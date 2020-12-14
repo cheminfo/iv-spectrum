@@ -19,7 +19,7 @@ function parseMeta(meta: Record<string, string>): Record<string, unknown> {
   return ans;
 }
 
-function keyMapper(keys: string[]) {
+function keyMap(keys: string[]) {
   return keys.map((key, index) => {
     if (key === 'Vd') return 'x';
     if (key === 'C') return 'y';
@@ -28,7 +28,7 @@ function keyMapper(keys: string[]) {
 }
 
 export function fromCVd(text: string) {
-  const { data, meta } = ndParse(text, keyMapper);
+  const { data, meta } = ndParse(text, { keyMap });
   const parsedMeta = parseMeta(meta);
 
   let analysis = new Analysis();
