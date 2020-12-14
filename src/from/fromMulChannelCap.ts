@@ -42,7 +42,7 @@ export function fromMulChannelCap(text: string) {
 
   let analysis = new Analysis();
   analysis.pushSpectrum(appendUnits(data), {
-    title: `Vg=${data.g.data[0]}V`,
+    title: `Vg = ${data.g.data[0]}V`,
     meta: parseMeta(meta),
   });
 
