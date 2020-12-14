@@ -5,6 +5,7 @@ export {
   toJcamp,
   getJSGraph,
   getNormalizationAnnotations,
+  getReactPlotJSON,
 } from 'common-spectrum';
 
 export { fromSIV } from './from/fromSIV';

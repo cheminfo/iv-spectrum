@@ -3,6 +3,10 @@ import { join } from 'path';
 
 import { fromSIV } from '../fromSIV';
 
+interface ExperimentType {
+  meta: { experiment: string };
+}
+
 test('fromSIV', () => {
   let siv = readFileSync(
     join(__dirname, '../../../testFiles/test.sIv'),
@@ -10,7 +14,9 @@ test('fromSIV', () => {
   );
   let analysis = fromSIV(siv);
 
-  const experiments = analysis.spectra.map(({ meta }: any) => meta.experiment);
+  const experiments: string[] = analysis.spectra.map(
+    ({ meta }: ExperimentType) => meta.experiment,
+  );
   expect(experiments).toStrictEqual([
     'DarkCurrent',
     'PhotoCurrent0',
