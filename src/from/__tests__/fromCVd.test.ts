@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs';
 import { join } from 'path';
 
-import { fromCVd } from '../fromCVd';
+import { fromCVd } from '../../index';
 
 test('fromCVd', () => {
   let csv = readFileSync(
@@ -15,7 +15,7 @@ test('fromCVd', () => {
   expect(spectrum.variables.x.label).toStrictEqual('Vd');
 
   expect(spectrum.variables.y.data).toHaveLength(1001);
-  expect(spectrum.variables.y.label).toStrictEqual('C');
+  expect(spectrum.variables.y.label).toStrictEqual('C dens');
 
   expect(spectrum.title).toBe('Cdg-V_high_voltage');
 });
