@@ -46,13 +46,20 @@ const units: Record<string, string> = {
   F: 'Hz',
   T: 's',
 };
-export function appendUnits(data: Record<string, SeriesType>) {
+export function appendUnits(
+  data: Record<string, SeriesType>,
+  knownUnits: Record<string, string> = {},
+) {
   for (const key in data) {
     const { label } = data[key];
-    const unit = units[label.trim()[0].toUpperCase()] || undefined;
-    if (unit) {
-      const isDens = /dens/.exec(label);
-      data[key].units = isDens !== null ? `${unit}/mm` : unit;
+    if (knownUnits[label.trim()]) {
+      data[key].units = knownUnits[label.trim()];
+    } else {
+      const unit = units[label.trim()[0].toUpperCase()] || undefined;
+      if (unit) {
+        const isDens = /dens/.exec(label);
+        data[key].units = isDens !== null ? `${unit}/mm` : unit;
+      }
     }
   }
   return data;
