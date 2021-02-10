@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.0](https://www.github.com/cheminfo/iv-spectrum/compare/v0.6.1...v0.7.0) (2021-02-10)
+
+
+### Features
+
+* read all datakinds from b1505 ([de62ae7](https://www.github.com/cheminfo/iv-spectrum/commit/de62ae782166798f54029f13a8ec43b86da1461f))
+
 ### [0.6.1](https://www.github.com/cheminfo/iv-spectrum/compare/v0.6.0...v0.6.1) (2021-01-04)
 
 
