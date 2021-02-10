@@ -7,11 +7,14 @@ const enum varHeadersKeys {
   name = 'Name',
   units = 'Units',
 }
+type Scales = 'linear' | 'log';
 
 export default class BaseB1505 {
   private readonly xLabel: string;
   private readonly yLabel: string;
   private readonly isTagged: boolean;
+  private readonly scale: Scales;
+
   private readonly metaVarHeaders = [
     'Analysis.Setup.Vector.Graph.XAxis',
     'Analysis.Setup.Vector.Graph.YAxis',
@@ -19,10 +22,16 @@ export default class BaseB1505 {
     'Function.User',
   ];
 
-  public constructor(xLabel: string, yLabel: string, isTagged: boolean) {
+  public constructor(
+    xLabel: string,
+    yLabel: string,
+    isTagged: boolean,
+    scale: Scales,
+  ) {
     this.xLabel = xLabel;
     this.yLabel = yLabel;
     this.isTagged = isTagged;
+    this.scale = scale;
   }
 
   private parseMeta(meta: Record<string, string>): Record<string, unknown> {
@@ -37,6 +46,9 @@ export default class BaseB1505 {
           : listValues.map((v) => toNumber(v));
       ans[key] = value;
     }
+
+    // add default kind scale
+    ans.scale = this.scale;
 
     return ans;
   }
