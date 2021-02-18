@@ -1,25 +1,15 @@
 import { fromCapacitance } from './from/b1505';
 
 export {
-  Analysis,
-  AnalysesManager,
-  fromJcamp,
-  toJcamp,
-  getJSGraph,
-  getNormalizationAnnotations,
-  getReactPlotJSON,
-} from 'common-spectrum';
-
-export {
-  fromCapacitance,
-  fromBreakdown,
-  fromHEMTBreakdown,
   fromIV,
   fromOutput,
   fromTransfer,
-  fromMOSCapacitance,
+  fromBreakdown,
   fromNoffOutput,
+  fromCapacitance,
   fromNoffTransfer,
+  fromHEMTBreakdown,
+  fromMOSCapacitance,
 } from './from/b1505';
 export { fromSIV } from './from/fromSIV';
 export { fromMulChannelCap } from './from/fromMulChannelCap';
