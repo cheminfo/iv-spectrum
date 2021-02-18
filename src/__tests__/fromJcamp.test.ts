@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs';
 import { join } from 'path';
 
-import { fromJcamp } from '..';
+import { fromJcamp } from 'common-spectrum';
 
 test('fromJcamp', () => {
   const jcamp = readFileSync(
