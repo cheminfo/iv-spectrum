@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.0](https://www.github.com/cheminfo/iv-spectrum/compare/v0.7.0...v0.8.0) (2021-02-18)
+
+
+### Features
+
+* B1505 parser for multiple series ([#17](https://www.github.com/cheminfo/iv-spectrum/issues/17)) ([eab05c6](https://www.github.com/cheminfo/iv-spectrum/commit/eab05c6b4fb18fcb55b21860fa22d6ec4b6164aa))
+
 ## [0.7.0](https://www.github.com/cheminfo/iv-spectrum/compare/v0.6.1...v0.7.0) (2021-02-10)
 
 
