@@ -1,5 +1,13 @@
 # Changelog
 
+### [0.8.1](https://www.github.com/cheminfo/iv-spectrum/compare/v0.8.0...v0.8.1) (2021-02-18)
+
+
+### Bug Fixes
+
+* import jcamp from common-spectra ([0ee846b](https://www.github.com/cheminfo/iv-spectrum/commit/0ee846b54d5a0f8cb1be1f3e8dd466e20b7cbec2))
+* remove exported common-spectrum ([5490774](https://www.github.com/cheminfo/iv-spectrum/commit/54907744bb0e45ed47e46e7ddc1c24cfedc62dff))
+
 ## [0.8.0](https://www.github.com/cheminfo/iv-spectrum/compare/v0.7.0...v0.8.0) (2021-02-18)
 
 
