@@ -1,5 +1,5 @@
 import { Analysis } from 'common-spectrum';
-import { ndParse } from 'ndim-parser';
+import { appendedParser } from 'ndim-parser';
 
 import { appendUnits, toNumber } from '../../utils';
 
@@ -12,7 +12,6 @@ type Scales = 'linear' | 'log';
 export default class BaseB1505 {
   private readonly xLabel: string;
   private readonly yLabel: string;
-  private readonly isTagged: boolean;
   private readonly scale: Scales;
 
   private readonly metaVarHeaders = [
@@ -22,15 +21,9 @@ export default class BaseB1505 {
     'Function.User',
   ];
 
-  public constructor(
-    xLabel: string,
-    yLabel: string,
-    isTagged: boolean,
-    scale: Scales,
-  ) {
+  public constructor(xLabel: string, yLabel: string, scale: Scales) {
     this.xLabel = xLabel;
     this.yLabel = yLabel;
-    this.isTagged = isTagged;
     this.scale = scale;
   }
 
@@ -48,7 +41,8 @@ export default class BaseB1505 {
     }
 
     // add default kind scale
-    ans.scale = this.scale;
+    const { xLabel, yLabel, scale } = this;
+    ans.defaults = { xLabel, yLabel, scale };
 
     return ans;
   }
@@ -69,26 +63,26 @@ export default class BaseB1505 {
     return knownUnits;
   }
 
-  private keyMap(keys: string[]) {
-    return keys.map((key, index) => {
-      if (key === this.xLabel) return 'x';
-      if (key === this.yLabel) return 'y';
-      return String.fromCharCode(65 + index);
-    });
-  }
-
   public parseText(text: string) {
-    const keyMap = this.keyMap.bind(this);
-    const { data, meta } = ndParse(text, { keyMap, isTagged: this.isTagged });
-    const parsedMeta = this.parseMeta(meta);
-    const knownUnits = this.metaUnits(meta);
+    const series = appendedParser(text);
+    let analyses = [];
 
-    let analysis = new Analysis();
-    analysis.pushSpectrum(appendUnits(data, knownUnits), {
-      title: parsedMeta['Setup title'] || parsedMeta.SetupTitle,
-      meta: parsedMeta,
-    });
+    for (const serie of series) {
+      const { data, meta } = serie;
+      const parsedMeta = this.parseMeta(meta);
+      const knownUnits = this.metaUnits(meta);
 
-    return analysis;
+      let analysis = new Analysis();
+      analysis.pushSpectrum(appendUnits(data, knownUnits), {
+        title:
+          parsedMeta['TestRecord.Remarks'] ||
+          parsedMeta['Setup title'] ||
+          parsedMeta.SetupTitle,
+        meta: parsedMeta,
+      });
+      analyses.push(analysis);
+    }
+
+    return analyses;
   }
 }
