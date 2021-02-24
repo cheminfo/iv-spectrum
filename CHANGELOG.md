@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.8.2](https://www.github.com/cheminfo/iv-spectrum/compare/v0.8.1...v0.8.2) (2021-02-24)
+
+
+### Bug Fixes
+
+* add missing export ([#20](https://www.github.com/cheminfo/iv-spectrum/issues/20)) ([6445114](https://www.github.com/cheminfo/iv-spectrum/commit/644511422b092f0d6137650378d76c327ff942a0))
+
 ### [0.8.1](https://www.github.com/cheminfo/iv-spectrum/compare/v0.8.0...v0.8.1) (2021-02-18)
 
 
