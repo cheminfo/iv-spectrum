@@ -2,6 +2,7 @@ import { fromCapacitance } from './from/b1505';
 
 export {
   fromIV,
+  fromB1505,
   fromOutput,
   fromTransfer,
   fromBreakdown,
