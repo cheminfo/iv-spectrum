@@ -61,11 +61,14 @@ export function appendUnits(
 
     // Replaces density for dens
     if (isDens) {
-      data[key].label = label.replace(
+      label = label.replace(
         /(?<name>.+)(?<separator>_|\s)density/,
         '$<name>$<separator>dens',
       );
     }
+
+    const labelUnits = data[key].units ? ` [${data[key].units as string}]` : '';
+    data[key].label = label + labelUnits;
   }
   return data;
 }
