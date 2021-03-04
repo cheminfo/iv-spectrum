@@ -5,14 +5,11 @@ import { Analysis } from 'common-spectrum';
 
 import {
   fromBreakdown,
-  fromHEMTBreakdown,
   fromCapacitance,
   fromIV,
   fromOutput,
   fromTransfer,
   fromMOSCapacitance,
-  fromNoffOutput,
-  fromNoffTransfer,
 } from '../index';
 
 function testFile(
@@ -56,7 +53,7 @@ describe('Breakdown', () => {
   });
 
   it('HEMT Breakdown', () => {
-    testFile('Breakdown/HEMT_breakdown.csv', fromHEMTBreakdown, 407);
+    testFile('Breakdown/HEMT_breakdown.csv', fromBreakdown, 407);
   });
 });
 
@@ -85,7 +82,7 @@ describe('Output', () => {
   });
 
   it('noff trigate', () => {
-    testFile('Output/noff_trigate.csv', fromNoffOutput, 300);
+    testFile('Output/noff_trigate.csv', fromOutput, 300);
   });
 
   it('Output', () => {
@@ -99,6 +96,6 @@ describe('Transfer', () => {
   });
 
   it('noff trigate', () => {
-    testFile('Transfer/noff_trigate.csv', fromNoffTransfer, 200);
+    testFile('Transfer/noff_trigate.csv', fromTransfer, 200);
   });
 });
