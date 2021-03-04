@@ -1,3 +1,5 @@
+import { VariableType } from 'common-spectrum/lib/types';
+
 interface DataType {
   x: number[];
   y: number[];
@@ -26,16 +28,6 @@ export function getInfo({ x, y }: DataType) {
   return { x0, y0, max, power };
 }
 
-export function toNumber(value: string) {
-  return isNaN(Number(value)) ? value : Number(value);
-}
-
-interface SeriesType {
-  data: number[];
-  label: string;
-  units?: string;
-}
-
 const units: Record<string, string> = {
   C: 'F',
   I: 'A',
@@ -47,17 +39,22 @@ const units: Record<string, string> = {
   T: 's',
 };
 export function appendUnits(
-  data: Record<string, SeriesType>,
+  data: Record<string, VariableType>,
   knownUnits: Record<string, string> = {},
-) {
+): Record<string, VariableType> {
   for (const key in data) {
-    const { label } = data[key];
-    if (knownUnits[label.trim()]) {
-      data[key].units = knownUnits[label.trim()];
-    } else {
-      const unit = units[label.trim()[0].toUpperCase()] || undefined;
+    let label = data[key].label.trim();
+    const isDens = /dens/.exec(label);
+
+    // The variable already has a default unit
+    if (knownUnits[label]) {
+      data[key].units = knownUnits[label];
+    }
+
+    // Infer the variables units based on the name
+    else {
+      const unit = units[label[0].toUpperCase()] || undefined;
       if (unit) {
-        const isDens = /dens/.exec(label);
         data[key].units = isDens !== null ? `${unit}/mm` : unit;
       }
     }

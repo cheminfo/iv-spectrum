@@ -1,6 +1,8 @@
 import { readFileSync } from 'fs';
 import { join } from 'path';
 
+import { Analysis } from 'common-spectrum';
+
 import {
   fromBreakdown,
   fromHEMTBreakdown,
@@ -15,8 +17,7 @@ import {
 
 function testFile(
   name: string,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  func: (text: string) => any,
+  func: (text: string) => Analysis[],
   length: number,
 ) {
   let csv = readFileSync(
@@ -25,14 +26,15 @@ function testFile(
   );
   let analyses = func(csv);
   for (const analysis of analyses) {
-    const { xLabel, yLabel } = analysis.spectra[0].meta.defaults;
+    const { 'default.xLabel': xLabel, 'default.yLabel': yLabel } =
+      analysis.spectra[0]?.meta || {};
     let spectrum = analysis.getXYSpectrum({ xLabel, yLabel });
 
-    expect(spectrum.variables.x.data).toHaveLength(length);
-    expect(spectrum.variables.x.label).toStrictEqual(xLabel);
+    expect(spectrum?.variables.x.data).toHaveLength(length);
+    expect(spectrum?.variables.x.label).toStrictEqual(xLabel);
 
-    expect(spectrum.variables.y.data).toHaveLength(length);
-    expect(spectrum.variables.y.label).toStrictEqual(yLabel);
+    expect(spectrum?.variables.y.data).toHaveLength(length);
+    expect(spectrum?.variables.y.label).toStrictEqual(yLabel);
   }
 }
 
