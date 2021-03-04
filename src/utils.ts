@@ -58,6 +58,14 @@ export function appendUnits(
         data[key].units = isDens !== null ? `${unit}/mm` : unit;
       }
     }
+
+    // Replaces density for dens
+    if (isDens) {
+      data[key].label = label.replace(
+        /(?<name>.+)(?<separator>_|\s)density/,
+        '$<name>$<separator>dens',
+      );
+    }
   }
   return data;
 }
