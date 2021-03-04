@@ -28,10 +28,14 @@ function testFile(
     let spectrum = analysis.getXYSpectrum({ xLabel, yLabel });
 
     expect(spectrum?.variables.x.data).toHaveLength(length);
-    expect(spectrum?.variables.x.label).toStrictEqual(xLabel);
+    expect(spectrum?.variables.x.label).toStrictEqual(
+      `${xLabel} [${spectrum?.variables.x.units || ''}]`,
+    );
 
     expect(spectrum?.variables.y.data).toHaveLength(length);
-    expect(spectrum?.variables.y.label).toStrictEqual(yLabel);
+    expect(spectrum?.variables.y.label).toStrictEqual(
+      `${yLabel} [${spectrum?.variables.y.units || ''}]`,
+    );
   }
 }
 
