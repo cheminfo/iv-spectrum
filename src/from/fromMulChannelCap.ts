@@ -1,16 +1,16 @@
 import { Analysis } from 'common-spectrum';
 import { ndParse } from 'ndim-parser';
 
-import { appendUnits, toNumber } from '../utils';
+import { appendUnits } from '../utils';
 
-function parseMeta(meta: Record<string, string>): Record<string, unknown> {
+function parseMeta(meta: Record<string, string>): Record<string, string> {
   if (!meta) return {};
 
-  let ans: Record<string, unknown> = {};
+  let ans: Record<string, string> = {};
   for (const key in meta) {
     const line = [key, ...meta[key].split(',')];
     for (let index = 0; index < line.length; index += 2) {
-      if (line[index]) ans[line[index]] = toNumber(line[index + 1]);
+      if (line[index]) ans[line[index]] = line[index + 1];
     }
   }
 

@@ -1,7 +1,7 @@
 import { Analysis } from 'common-spectrum';
 import { appendedParser } from 'ndim-parser';
 
-import { appendUnits, toNumber } from '../../utils';
+import { appendUnits } from '../../utils';
 
 const enum varHeadersKeys {
   name = 'Name',
@@ -27,22 +27,22 @@ export default class BaseB1505 {
     this.scale = scale;
   }
 
-  private parseMeta(meta: Record<string, string>): Record<string, unknown> {
+  private parseMeta(meta: Record<string, string>): Record<string, string> {
     if (!meta) return {};
 
-    let ans: Record<string, unknown> = {};
+    let ans: Record<string, string> = {};
     for (const key in meta) {
-      const listValues = meta[key].split(',');
-      const value =
-        listValues.length === 1
-          ? toNumber(listValues[0])
-          : listValues.map((v) => toNumber(v));
-      ans[key] = value;
+      ans[key] = meta[key]
+        .split(',')
+        .filter((val) => val !== '')
+        .join(',');
     }
 
     // add default kind scale
     const { xLabel, yLabel, scale } = this;
-    ans.defaults = { xLabel, yLabel, scale };
+    ans['default.xLabel'] = xLabel;
+    ans['default.yLabel'] = yLabel;
+    ans['default.scale'] = scale;
 
     return ans;
   }

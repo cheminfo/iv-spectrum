@@ -50,15 +50,13 @@ export function fromSIV(content: string) {
     analysis.pushSpectrum(
       {
         x: {
-          type: 'independent',
           label: axis.x.kind,
-          unit: axis.x.unit,
-          data: data.x,
+          units: axis.x.unit,
+          data: data.x || [],
         },
         y: {
-          type: 'dependent',
           label: axis.y.kind,
-          unit: axis.y.unit,
+          units: axis.y.unit,
           data: data.y,
         },
       },
@@ -69,13 +67,12 @@ export function fromSIV(content: string) {
 }
 
 function parseDate(line: string) {
-  const dateString = line.replace('X d_t=', '').trim().replace(/"/g, '');
-  return new Date(dateString);
+  return line.replace('X d_t=', '').trim().replace(/"/g, '');
 }
 
 function parseScale(line: string, nbValues: number) {
   let result: Record<string, PartType> = {};
-  const parts = line.replace(/ ([xy]) /g, ',$1,').split('; ');
+  const parts = line.replace(/ (?<part>[xy]) /g, ',$<part>,').split('; ');
 
   for (const part of parts) {
     const parsedPart = parseScalePart(part, nbValues);
@@ -87,11 +84,13 @@ function parseScale(line: string, nbValues: number) {
 function parseS(lines: string[]) {
   let result: Record<string, number | string> = {};
   for (const line of lines) {
-    const key = getFieldName(line.replace(/X ._([^=]*)=(.*)/, '$1').trim());
+    const key = getFieldName(
+      line.replace(/X ._(?<var>[^=]*)=(?<val>.*)/, '$<var>').trim(),
+    );
     let value: number | string = line
-      .replace(/X ._([^=]*)=(.*)/, '$2')
+      .replace(/X ._(?<var>[^=]*)=(?<val>.*)/, '$<val>')
       .trim()
-      .replace(/^"(.*)"$/, '$1');
+      .replace(/^"(?<val>.*)"$/, '$<val>');
     if (!isNaN(Number(value))) value = Number(value);
     result[key] = value;
   }
@@ -101,11 +100,13 @@ function parseS(lines: string[]) {
 function parseV(lines: string[]) {
   let result: Record<string, string | number> = {};
   for (const line of lines) {
-    const key = getFieldName(line.replace(/X ._([^=]*)=(.*)/, '$1').trim());
-    let value: string | number = line
-      .replace(/X ._([^=]*)=(.*)/, '$2')
+    const key = getFieldName(
+      line.replace(/X ._(?<var>[^=]*)=(?<val>.*)/, '$<var>').trim(),
+    );
+    let value: number | string = line
+      .replace(/X ._(?<var>[^=]*)=(?<val>.*)/, '$<val>')
       .trim()
-      .replace(/^"(.*)"$/, '$1');
+      .replace(/^"(?<val>.*)"$/, '$<val>');
     if (!isNaN(Number(value))) value = Number(value);
     result[key] = value;
   }
@@ -123,7 +124,7 @@ function parseNote(line: string) {
     let value: string | number = part
       .substring(semiColumn + 1)
       .trim()
-      .replace(/^"(.*)"$/, '$1');
+      .replace(/^"(?<val>.*)"$/, '$<val>');
     if (!isNaN(Number(value))) value = Number(value);
     if (!key) continue;
     result[key] = value;
