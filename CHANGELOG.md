@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.9.0](https://www.github.com/cheminfo/iv-spectrum/compare/v0.8.2...v0.9.0) (2021-03-05)
+
+
+### Features
+
+* add units to variable name ([f285913](https://www.github.com/cheminfo/iv-spectrum/commit/f28591345e4fc10e28708c8a8306a8095e97e4dc))
+* replace density for dens ([71887d6](https://www.github.com/cheminfo/iv-spectrum/commit/71887d6ccd32b1a7e92cdb20857fc0ac0418b79f))
+
+
+### Bug Fixes
+
+* labels have units ([20961c6](https://www.github.com/cheminfo/iv-spectrum/commit/20961c69d3fb8dfed9dff925d5bdbac955e594d8))
+* update dependencies ([789af0d](https://www.github.com/cheminfo/iv-spectrum/commit/789af0d61564e83be68ed6389fe0d69bca1be319))
+
 ### [0.8.2](https://www.github.com/cheminfo/iv-spectrum/compare/v0.8.1...v0.8.2) (2021-02-24)
 
 
