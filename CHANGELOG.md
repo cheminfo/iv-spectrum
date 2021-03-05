@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.9.1](https://www.github.com/cheminfo/iv-spectrum/compare/v0.9.0...v0.9.1) (2021-03-05)
+
+
+### Bug Fixes
+
+* missing dependencies for release ([#24](https://www.github.com/cheminfo/iv-spectrum/issues/24)) ([14e621c](https://www.github.com/cheminfo/iv-spectrum/commit/14e621c9cab7b9fff2c291b310bbf6047dff9b87))
+
 ## [0.9.0](https://www.github.com/cheminfo/iv-spectrum/compare/v0.8.2...v0.9.0) (2021-03-05)
 
 
