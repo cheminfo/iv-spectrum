@@ -47,7 +47,7 @@
     "trailingComma": "all"
   },
   "dependencies": {
-    "common-spectrum": "^0.25.0",
+    "common-spectrum": "^0.26.1",
     "ndim-parser": "^0.4.0"
   },
   "devDependencies": {
