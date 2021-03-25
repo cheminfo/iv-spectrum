@@ -1,4 +1,12 @@
 export {
+  Analysis,
+  AnalysesManager,
+  fromJcamp,
+  toJcamp,
+  JSGraph,
+} from 'common-spectrum';
+
+export {
   fromIV,
   fromB1505,
   fromOutput,
