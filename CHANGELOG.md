@@ -1,5 +1,13 @@
 # Changelog
 
+### [0.9.3](https://www.github.com/cheminfo/iv-spectrum/compare/v0.9.2...v0.9.3) (2021-04-14)
+
+
+### Bug Fixes
+
+* add reexport for browser build ([3427915](https://www.github.com/cheminfo/iv-spectrum/commit/342791578ecd4414438615884a26c5c2a0d9d25a))
+* update latest common-spectrum version ([#32](https://www.github.com/cheminfo/iv-spectrum/issues/32)) ([a5ff6eb](https://www.github.com/cheminfo/iv-spectrum/commit/a5ff6eb1eab9e6909beb3c1082eb9141f7d44307))
+
 ### [0.9.2](https://www.github.com/cheminfo/iv-spectrum/compare/v0.9.1...v0.9.2) (2021-03-16)
 
 
