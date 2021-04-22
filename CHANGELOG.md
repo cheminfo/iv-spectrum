@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.0](https://www.github.com/cheminfo/iv-spectrum/compare/v0.9.3...v0.10.0) (2021-04-22)
+
+
+### Features
+
+* update react-plot ([#33](https://www.github.com/cheminfo/iv-spectrum/issues/33)) ([5f5cb27](https://www.github.com/cheminfo/iv-spectrum/commit/5f5cb27a816f0e9ba6ac383faa302b8fb85d133b))
+
 ### [0.9.3](https://www.github.com/cheminfo/iv-spectrum/compare/v0.9.2...v0.9.3) (2021-04-14)
 
 
