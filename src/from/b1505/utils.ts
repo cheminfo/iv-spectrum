@@ -35,12 +35,20 @@ const stdUnits: Record<string, string> = {
   F: 'Hz',
   T: 's',
 };
+const generatedVars = ['Ron', 'gm'];
+
 export function appendUnits(
   data: Record<string, VariableType>,
   knownUnits: Record<string, string> = {},
 ): Record<string, VariableType> {
   for (const key in data) {
     let label = data[key].label.trim();
+
+    // In the case of calculated variables unifies naming
+    if (generatedVars.includes(label)) {
+      label = `${label}_dens`;
+    }
+
     const [densLabel, isDens] = getDensities(label);
 
     // The variable already has a default unit
