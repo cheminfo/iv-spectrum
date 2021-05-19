@@ -1,6 +1,6 @@
 import BaseB1505 from './BaseB1505';
 
-interface Options {
+export interface Options {
   xLabel: string;
   yLabel: string;
   scale: 'linear' | 'log';

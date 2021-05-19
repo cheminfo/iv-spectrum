@@ -1,7 +1,7 @@
 import { Analysis } from 'common-spectrum';
 import { appendedParser } from 'ndim-parser';
 
-import { appendUnits } from '../../utils';
+import { appendUnits } from './utils';
 
 const enum varHeadersKeys {
   name = 'Name',

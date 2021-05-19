@@ -15,5 +15,6 @@ export {
   fromCapacitance,
   fromMOSCapacitance,
 } from './from/b1505';
+export { getLabels as getLabelsB1505 } from './from/b1505/utils';
 export { fromSIV } from './from/fromSIV';
 export { fromMulChannelCap } from './from/fromMulChannelCap';
