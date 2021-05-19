@@ -67,15 +67,16 @@ export default class BaseB1505 {
     const series = appendedParser(text);
     let analyses = [];
 
-    for (const serie of series) {
-      const { data, meta } = serie;
+    for (const { data, meta } of series) {
       const parsedMeta = this.parseMeta(meta);
       const knownUnits = this.metaUnits(meta);
 
       let analysis = new Analysis();
       analysis.pushSpectrum(appendUnits(data, knownUnits), {
         title:
+          parsedMeta.Remarks ||
           parsedMeta['TestRecord.Remarks'] ||
+          parsedMeta['Device ID'] ||
           parsedMeta['Setup title'] ||
           parsedMeta.SetupTitle,
         meta: parsedMeta,
