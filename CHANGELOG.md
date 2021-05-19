@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.10.1](https://www.github.com/cheminfo/iv-spectrum/compare/v0.10.0...v0.10.1) (2021-05-19)
+
+
+### Bug Fixes
+
+* search title in metadata options ([#36](https://www.github.com/cheminfo/iv-spectrum/issues/36)) ([fa811f5](https://www.github.com/cheminfo/iv-spectrum/commit/fa811f5759046b10e453e9b0531abbcb1dcefe1f))
+
 ## [0.10.0](https://www.github.com/cheminfo/iv-spectrum/compare/v0.9.3...v0.10.0) (2021-04-22)
 
 
