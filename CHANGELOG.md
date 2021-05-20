@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.11.0](https://www.github.com/cheminfo/iv-spectrum/compare/v0.10.0...v0.11.0) (2021-05-20)
+
+
+### Features
+
+* get labels from metadata ([#38](https://www.github.com/cheminfo/iv-spectrum/issues/38)) ([4b4c684](https://www.github.com/cheminfo/iv-spectrum/commit/4b4c684d5769ba5ab43a983b553c44a5cf9b4df9))
+
+
+### Bug Fixes
+
+* search title in metadata options ([#36](https://www.github.com/cheminfo/iv-spectrum/issues/36)) ([fa811f5](https://www.github.com/cheminfo/iv-spectrum/commit/fa811f5759046b10e453e9b0531abbcb1dcefe1f))
+
 ## [0.10.0](https://www.github.com/cheminfo/iv-spectrum/compare/v0.9.3...v0.10.0) (2021-04-22)
 
 
