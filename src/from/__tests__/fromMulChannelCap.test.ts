@@ -17,5 +17,5 @@ test('fromMulChannelCap', () => {
   expect(spectrum?.variables.y.data).toHaveLength(6);
   expect(spectrum?.variables.y.label).toStrictEqual('Id [A]');
 
-  expect(spectrum?.title).toBe('Vg=7V');
+  expect(spectrum?.title).toBe('Vg = 7V');
 });
