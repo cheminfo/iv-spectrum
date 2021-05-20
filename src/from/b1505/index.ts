@@ -1,12 +1,25 @@
 import BaseB1505 from './BaseB1505';
+import { getLabels } from './utils';
 
-export interface Options {
+interface Options {
   xLabel: string;
   yLabel: string;
   scale: 'linear' | 'log';
 }
-export function fromB1505(text: string, { xLabel, yLabel, scale }: Options) {
-  return new BaseB1505(xLabel, yLabel, scale).parseText(text);
+export function fromB1505(text: string, options?: Options) {
+  if (options) {
+    const { xLabel, yLabel, scale } = options;
+    return new BaseB1505(xLabel, yLabel, scale).parseText(text);
+  } else {
+    const processor = new BaseB1505('', '', 'linear');
+    const analyses = processor.parseText(text);
+    if (analyses[0]) {
+      const { xLabel, yLabel, scale } = getLabels(analyses[0]);
+      return new BaseB1505(xLabel, yLabel, scale).parseText(text);
+    } else {
+      return [];
+    }
+  }
 }
 
 export function fromBreakdown(text: string) {

@@ -10,6 +10,7 @@ import {
   fromOutput,
   fromTransfer,
   fromMOSCapacitance,
+  fromB1505,
 } from '../index';
 
 function testFile(
@@ -41,6 +42,31 @@ function testFile(
     );
   }
 }
+
+describe('Automatic labels selection', () => {
+  it('Breakdown', () => {
+    let csv = readFileSync(
+      join(__dirname, '../../../../testFiles/B1505/Breakdown/breakdown.csv'),
+      'latin1',
+    );
+    const analyses = fromB1505(csv);
+    expect(analyses[0].spectra[0].variables.x.label).toBe('Vd [V]');
+    expect(analyses[0].spectra[0].variables.D.label).toBe('Id_dens [A/mm]');
+  });
+
+  it('Capacitance', () => {
+    let csv = readFileSync(
+      join(
+        __dirname,
+        '../../../../testFiles/B1505/Capacitance/high_voltage.csv',
+      ),
+      'latin1',
+    );
+    const analyses = fromB1505(csv);
+    expect(analyses[0].spectra[0].variables.x.label).toBe('Vd [V]');
+    expect(analyses[0].spectra[0].variables.y.label).toBe('C_dens [F/mm]');
+  });
+});
 
 describe('Breakdown', () => {
   it('Breakdown', () => {
