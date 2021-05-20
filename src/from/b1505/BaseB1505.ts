@@ -1,25 +1,47 @@
 import { Analysis } from 'common-spectrum';
 import { appendedParser } from 'ndim-parser';
 
-import { appendUnits } from './utils';
+import { appendUnits, getDensities } from './utils';
+
+type Scales = 'linear' | 'log';
 
 const enum varHeadersKeys {
   name = 'Name',
-  units = 'Units',
+  units = 'Unit',
 }
-type Scales = 'linear' | 'log';
+const metaVarHeaders = [
+  'Analysis.Setup.Vector.Graph.XAxis',
+  'Analysis.Setup.Vector.Graph.YAxis',
+  'Analysis.Setup.Vector.List.Datum',
+  'Function.User',
+];
+
+export function metaUnits(meta: Record<string, string>) {
+  let knownUnits: Record<string, string> = {};
+  for (const key of metaVarHeaders) {
+    const keyName = `${key}.${varHeadersKeys.name}`;
+    const keyUnits = `${key}.${varHeadersKeys.units}`;
+    if (meta[keyName] && meta[keyUnits]) {
+      const names = meta[keyName].split(',');
+      const units = meta[keyUnits].split(',');
+      for (let index = 0; index < names.length; index++) {
+        const [label] = getDensities(names[index]);
+        if (label === 'Q_dens') {
+          // TODO the existing parser doesn't recognize electron charge units
+          knownUnits[label] = 'uC/mm';
+        } else {
+          knownUnits[label] = units[index];
+        }
+      }
+    }
+  }
+  return knownUnits;
+}
 
 export default class BaseB1505 {
   private readonly xLabel: string;
   private readonly yLabel: string;
   private readonly scale: Scales;
-
-  private readonly metaVarHeaders = [
-    'Analysis.Setup.Vector.Graph.XAxis',
-    'Analysis.Setup.Vector.Graph.YAxis',
-    'Analysis.Setup.Vector.List.Datum',
-    'Function.User',
-  ];
 
   public constructor(xLabel: string, yLabel: string, scale: Scales) {
     this.xLabel = xLabel;
@@ -47,29 +69,13 @@ export default class BaseB1505 {
     return ans;
   }
 
-  private metaUnits(meta: Record<string, string>) {
-    let knownUnits: Record<string, string> = {};
-    for (const key of this.metaVarHeaders) {
-      const keyName = `${key}.${varHeadersKeys.name}`;
-      const keyUnits = `${key}.${varHeadersKeys.units}`;
-      if (meta[keyName] && meta[keyUnits]) {
-        const names = meta[keyName].split(',');
-        const units = meta[keyUnits].split(',');
-        for (let index = 0; index < names.length; index++) {
-          knownUnits[names[index]] = units[index];
-        }
-      }
-    }
-    return knownUnits;
-  }
-
   public parseText(text: string) {
     const series = appendedParser(text);
     let analyses = [];
 
     for (const { data, meta } of series) {
       const parsedMeta = this.parseMeta(meta);
-      const knownUnits = this.metaUnits(meta);
+      const knownUnits = metaUnits(meta);
 
       let analysis = new Analysis();
       analysis.pushSpectrum(appendUnits(data, knownUnits), {
