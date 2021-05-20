@@ -1,9 +1,16 @@
 import { Analysis } from 'common-spectrum';
 import { VariableType } from 'common-spectrum/lib/types';
 
-import type { Options } from './index';
+import { metaUnits } from './BaseB1505';
 
-function getDensities(label: string): [string, boolean] {
+interface Options {
+  xLabel: string;
+  yLabel: string;
+  scale: 'linear' | 'log';
+  units: Record<string, string>;
+}
+
+export function getDensities(label: string): [string, boolean] {
   const isDens = /dens/.exec(label);
   if (isDens) {
     return [
@@ -18,7 +25,7 @@ function getDensities(label: string): [string, boolean] {
   }
 }
 
-const units: Record<string, string> = {
+const stdUnits: Record<string, string> = {
   C: 'F',
   I: 'A',
   V: 'V',
@@ -43,7 +50,7 @@ export function appendUnits(
 
     // Infer the variables units based on the name
     else {
-      const unit = units[label[0].toUpperCase()] || undefined;
+      const unit = stdUnits[label[0].toUpperCase()] || undefined;
       if (unit) {
         data[key].units = isDens ? `${unit}/mm` : unit;
       }
@@ -73,5 +80,8 @@ export function getLabels(analysis: Analysis): Options {
     'linear'
       ? 'linear'
       : 'log';
-  return { xLabel, yLabel, scale };
+  let units = metaUnits(meta);
+  units[xLabel] = units[xLabel] || stdUnits[xLabel[0].toUpperCase()] || '';
+  units[yLabel] = units[yLabel] || stdUnits[yLabel[0].toUpperCase()] || '';
+  return { xLabel, yLabel, scale, units };
 }

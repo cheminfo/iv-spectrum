@@ -25,12 +25,14 @@ function testFile(
     'latin1',
   );
   const analysis = func(csv)[0];
-  const { xLabel, yLabel } = getLabels(analysis);
+  const { xLabel, yLabel, units } = getLabels(analysis);
   const spectrum = analysis.getXYSpectrum({ xLabel, yLabel });
 
   expect(spectrum?.title).toBe(title);
   expect(xLabel).toBe(x);
   expect(yLabel).toBe(y);
+  expect(units[xLabel]).not.toBeUndefined();
+  expect(units[yLabel]).not.toBeUndefined();
 }
 
 describe('Breakdown', () => {
