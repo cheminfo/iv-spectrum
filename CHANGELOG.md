@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.12.0](https://www.github.com/cheminfo/iv-spectrum/compare/v0.11.0...v0.12.0) (2021-05-21)
+
+
+### Features
+
+* add units to extracted labels from meta ([77daa77](https://www.github.com/cheminfo/iv-spectrum/commit/77daa7768bbd03f71112e1055123cf4046f88b7c))
+* allows empty labels for parser ([d993516](https://www.github.com/cheminfo/iv-spectrum/commit/d993516b72fc21fc29c03ce8c149cd8823b71a5d))
+
+
+### Bug Fixes
+
+* search in the metadata the units ([c9e8ffe](https://www.github.com/cheminfo/iv-spectrum/commit/c9e8ffeb935e5eee7bf3ce5b353e18086f19e986))
+
 ## [0.11.0](https://www.github.com/cheminfo/iv-spectrum/compare/v0.10.0...v0.11.0) (2021-05-20)
 
 
