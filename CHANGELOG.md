@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.12.1](https://www.github.com/cheminfo/iv-spectrum/compare/v0.12.0...v0.12.1) (2021-05-27)
+
+
+### Bug Fixes
+
+* unify non-standard variables ([#35](https://www.github.com/cheminfo/iv-spectrum/issues/35)) ([e72b28e](https://www.github.com/cheminfo/iv-spectrum/commit/e72b28e5d685894df2b97d813d9d505b30b630be))
+
 ## [0.12.0](https://www.github.com/cheminfo/iv-spectrum/compare/v0.11.0...v0.12.0) (2021-05-21)
 
 
