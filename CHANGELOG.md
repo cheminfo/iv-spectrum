@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.14.0](https://www.github.com/cheminfo/iv-spectrum/compare/v0.13.0...v0.14.0) (2021-06-24)
+
+
+### Features
+
+* allow enforce title ([d99a650](https://www.github.com/cheminfo/iv-spectrum/commit/d99a650f5da3e8c626ef94b46223cda22943bb46))
+
 ## [0.13.0](https://www.github.com/cheminfo/iv-spectrum/compare/v0.12.1...v0.13.0) (2021-06-24)
 
 
