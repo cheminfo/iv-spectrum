@@ -1,6 +1,6 @@
 {
   "name": "iv-spectrum",
-  "version": "0.12.1",
+  "version": "0.13.0",
   "description": "Read different formats and unify the format",
   "main": "./lib/index.js",
   "module": "./lib-esm/index.js",

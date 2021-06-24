@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.13.0](https://www.github.com/cheminfo/iv-spectrum/compare/v0.12.1...v0.13.0) (2021-06-24)
+
+
+### Features
+
+* create specific function for 2636b ([#43](https://www.github.com/cheminfo/iv-spectrum/issues/43)) ([ec4b238](https://www.github.com/cheminfo/iv-spectrum/commit/ec4b238c8a621e0c25e7e329033a771eb21817a8))
+
 ### [0.12.1](https://www.github.com/cheminfo/iv-spectrum/compare/v0.12.0...v0.12.1) (2021-05-27)
 
 
