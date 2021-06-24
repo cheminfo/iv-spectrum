@@ -27,7 +27,7 @@ function keyMap(keys: string[]) {
   });
 }
 
-export function from2636b(text: string) {
+export function from2636b(text: string, name?: string) {
   const { data, meta } = ndParse(text, { keyMap });
 
   const min = Object.values(data).reduce(
@@ -42,11 +42,12 @@ export function from2636b(text: string) {
   }
 
   let analysis = new Analysis();
-  const title = data.g
-    ? `Vg = ${data.g.data[0]}V`
-    : data.s
-    ? `Vs = ${data.s.data[0]}V`
-    : '2636b';
+  const title =
+    name || data.g
+      ? `Vg = ${data.g.data[0]}V`
+      : data.s
+      ? `Vs = ${data.s.data[0]}V`
+      : '2636b';
   analysis.pushSpectrum(appendUnits(data), {
     title,
     meta: parseMeta(meta),
