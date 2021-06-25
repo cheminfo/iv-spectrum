@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.14.1](https://www.github.com/cheminfo/iv-spectrum/compare/v0.14.0...v0.14.1) (2021-06-25)
+
+
+### Bug Fixes
+
+* precedence error on title ([392e800](https://www.github.com/cheminfo/iv-spectrum/commit/392e800b59303095e46791bc88ddad0b1229642b))
+
 ## [0.14.0](https://www.github.com/cheminfo/iv-spectrum/compare/v0.13.0...v0.14.0) (2021-06-24)
 
 
