@@ -8,7 +8,7 @@ function testFile(name: string, length: number) {
     join(__dirname, `../../../../testFiles/2636B/${name}`),
     'latin1',
   );
-  const analysis = from2636b(csv);
+  const analysis = from2636b(csv, 'test');
   let spectrum = analysis.getXYSpectrum({ xLabel: 'Vd', yLabel: 'Id' });
 
   expect(spectrum?.variables.x.data).toHaveLength(length);

@@ -43,11 +43,12 @@ export function from2636b(text: string, name?: string) {
 
   let analysis = new Analysis();
   const title =
-    name || data.g
+    name ||
+    (data.g
       ? `Vg = ${data.g.data[0]}V`
       : data.s
       ? `Vs = ${data.s.data[0]}V`
-      : '2636b';
+      : '2636b');
   analysis.pushSpectrum(appendUnits(data), {
     title,
     meta: parseMeta(meta),
