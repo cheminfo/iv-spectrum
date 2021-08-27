@@ -4,6 +4,7 @@ import { appendedParser } from 'ndim-parser';
 import { appendUnits, getDensities } from './utils';
 
 type Scales = 'linear' | 'log';
+type Calculation = (data: Analysis) => unknown;
 
 const enum varHeadersKeys {
   name = 'Name',
@@ -42,11 +43,17 @@ export default class BaseB1505 {
   private readonly xLabel: string;
   private readonly yLabel: string;
   private readonly scale: Scales;
+  private calculations: Array<Calculation>;
 
   public constructor(xLabel: string, yLabel: string, scale: Scales) {
     this.xLabel = xLabel;
     this.yLabel = yLabel;
     this.scale = scale;
+    this.calculations = [];
+  }
+
+  public addCalculation(calculation: Calculation) {
+    this.calculations.push(calculation);
   }
 
   private parseMeta(meta: Record<string, string>): Record<string, string> {
@@ -87,6 +94,9 @@ export default class BaseB1505 {
           parsedMeta.SetupTitle,
         meta: parsedMeta,
       });
+      for (const calculation of this.calculations) {
+        calculation(analysis);
+      }
       analyses.push(analysis);
     }
 

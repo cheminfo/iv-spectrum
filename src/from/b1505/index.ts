@@ -1,3 +1,6 @@
+import { diodeOnResistance } from '../../calculations/diodeOnResistance';
+import { transistorOnResistance } from '../../calculations/transistorOnResistance';
+
 import BaseB1505 from './BaseB1505';
 import { getLabels } from './utils';
 
@@ -31,11 +34,19 @@ export function fromTransfer(text: string) {
 }
 
 export function fromOutput(text: string) {
-  return new BaseB1505('Vd', 'Id_dens', 'linear').parseText(text);
+  const analysis = new BaseB1505('Vd', 'Id_dens', 'linear');
+  analysis.addCalculation((analysis) =>
+    transistorOnResistance(analysis, { autoSave: true }),
+  );
+  return analysis.parseText(text);
 }
 
 export function fromIV(text: string) {
-  return new BaseB1505('Vd', 'Id_dens', 'linear').parseText(text);
+  const analysis = new BaseB1505('Vd', 'Id_dens', 'linear');
+  analysis.addCalculation((analysis) =>
+    diodeOnResistance(analysis, { autoSave: true }),
+  );
+  return analysis.parseText(text);
 }
 
 export function fromCapacitance(text: string) {
