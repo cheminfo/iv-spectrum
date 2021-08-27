@@ -48,8 +48,8 @@ describe('Ron diode', () => {
       const res = diodeOnResistance(analysis);
       expect(res?.resistanceOn).toBeCloseTo(20.819, 2);
       expect(res?.score.r2).toBeCloseTo(0.992, 2);
-      expect(res?.Vf).toBeCloseTo(3.05, 2);
-      expect(res?.Von).toBeCloseTo(0, 2);
+      expect(res?.forwardVoltage).toBeCloseTo(3.05, 2);
+      expect(res?.onVoltage).toBeCloseTo(0, 2);
     }
   });
 
