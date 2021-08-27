@@ -13,7 +13,7 @@ export function diodeOnResistance(
   analysis: Analysis,
   options: ResistanceOptions = {},
 ): DiodeResult | null {
-  const { delta = 1e-2, autoSave = false } = options;
+  const { delta = 1e-2, autoSave = false, fromIndex, toIndex } = options;
   const spectrum = analysis.getXYSpectrum({
     xLabel: 'Vd',
     xUnits: 'V',
@@ -36,7 +36,11 @@ export function diodeOnResistance(
   let xStart = Infinity;
 
   for (let i = 0; i < y.length; i++) {
-    if (dy[i] > delta) {
+    if (
+      dy[i] > delta ||
+      (fromIndex !== undefined && fromIndex >= i) ||
+      (toIndex !== undefined && toIndex <= i)
+    ) {
       xStart = Math.min(xStart, i);
       xRes.push(x[i]);
       yRes.push(y[i]);

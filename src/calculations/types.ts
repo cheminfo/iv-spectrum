@@ -9,4 +9,6 @@ export interface Result {
 export interface ResistanceOptions {
   autoSave?: boolean;
   delta?: number;
+  fromIndex?: number;
+  toIndex?: number;
 }
