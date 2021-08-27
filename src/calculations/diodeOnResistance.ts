@@ -5,8 +5,8 @@ import fit from 'ml-savitzky-golay';
 import { ResistanceOptions, Result } from './types';
 
 interface DiodeResult extends Result {
-  Vf?: number;
-  Von?: number;
+  forwardVoltage?: number;
+  onVoltage?: number;
 }
 
 export function diodeOnResistance(
