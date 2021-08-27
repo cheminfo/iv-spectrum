@@ -8,7 +8,7 @@ export function transistorOnResistance(
   analysis: Analysis,
   options: ResistanceOptions = {},
 ): Result | null {
-  const { delta = 1e-2 } = options;
+  const { delta = 1e-2, autoSave = false } = options;
   const spectrum = analysis.getXYSpectrum({
     xLabel: 'Vd',
     xUnits: 'V',
@@ -40,10 +40,20 @@ export function transistorOnResistance(
 
   const regression = new SimpleLinearRegression(xRes, yRes);
   const score = regression.score(xRes, yRes);
-  return {
+  const response = {
     resistanceOn: 1 / regression.slope,
     score,
     toIndex: xStart,
     fromIndex: xStart + xRes.length,
   };
+
+  if (autoSave) {
+    const stringResp = JSON.stringify(response);
+    if (!spectrum.meta) {
+      spectrum.meta = { resistanceOn: stringResp };
+    } else {
+      spectrum.meta.resistanceOn = stringResp;
+    }
+  }
+  return response;
 }
