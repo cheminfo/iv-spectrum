@@ -63,8 +63,8 @@ export function diodeOnResistance(
     score,
     toIndex: xStart,
     fromIndex: xStart + xRes.length,
-    Vf: Vf.found ? Vf.x : undefined,
-    Von: Von.x,
+    forwardVoltage: Vf.found ? Vf.x : undefined,
+    onVoltage: Von.x,
   };
 
   if (autoSave) {
