@@ -8,7 +8,7 @@ export function transistorOnResistance(
   analysis: Analysis,
   options: ResistanceOptions = {},
 ): Result | null {
-  const { delta = 1e-2, autoSave = false } = options;
+  const { delta = 1e-2, autoSave = false, fromIndex, toIndex } = options;
   const spectrum = analysis.getXYSpectrum({
     xLabel: 'Vd',
     xUnits: 'V',
@@ -29,9 +29,12 @@ export function transistorOnResistance(
 
   let converged = false;
   for (let i = 0; i < y.length - 1 && !converged; i++) {
-    if (Math.abs(dy[i + 1] - dy[i]) > delta) {
+    if (
+      Math.abs(dy[i + 1] - dy[i]) > delta ||
+      (toIndex !== undefined && i >= toIndex)
+    ) {
       converged = true;
-    } else if (x[i] > 0) {
+    } else if (x[i] > 0 || (fromIndex !== undefined && i >= fromIndex)) {
       xStart = Math.min(xStart, i);
       xRes.push(x[i]);
       yRes.push(y[i]);
