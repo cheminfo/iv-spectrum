@@ -35,16 +35,16 @@ export function fromTransfer(text: string) {
 
 export function fromOutput(text: string) {
   const analysis = new BaseB1505('Vd', 'Id_dens', 'linear');
-  analysis.addCalculation((analysis) =>
-    transistorOnResistance(analysis, { autoSave: true }),
+  analysis.addCalculation('resistanceOn', (analysis) =>
+    transistorOnResistance(analysis),
   );
   return analysis.parseText(text);
 }
 
 export function fromIV(text: string) {
   const analysis = new BaseB1505('Vd', 'Id_dens', 'linear');
-  analysis.addCalculation((analysis) =>
-    diodeOnResistance(analysis, { autoSave: true }),
+  analysis.addCalculation('resistanceOn', (analysis) =>
+    diodeOnResistance(analysis),
   );
   return analysis.parseText(text);
 }

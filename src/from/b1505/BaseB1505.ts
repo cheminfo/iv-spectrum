@@ -1,10 +1,11 @@
 import { Analysis } from 'common-spectrum';
+import { SpectrumType } from 'common-spectrum/lib/types';
 import { appendedParser } from 'ndim-parser';
 
 import { appendUnits, getDensities } from './utils';
 
 type Scales = 'linear' | 'log';
-type Calculation = (data: Analysis) => unknown;
+type Calculation = (data: SpectrumType) => unknown;
 
 const enum varHeadersKeys {
   name = 'Name',
@@ -43,7 +44,7 @@ export default class BaseB1505 {
   private readonly xLabel: string;
   private readonly yLabel: string;
   private readonly scale: Scales;
-  private calculations: Array<Calculation>;
+  private calculations: Array<[string, Calculation]>;
 
   public constructor(xLabel: string, yLabel: string, scale: Scales) {
     this.xLabel = xLabel;
@@ -52,8 +53,8 @@ export default class BaseB1505 {
     this.calculations = [];
   }
 
-  public addCalculation(calculation: Calculation) {
-    this.calculations.push(calculation);
+  public addCalculation(name: string, calculation: Calculation) {
+    this.calculations.push([name, calculation]);
   }
 
   private parseMeta(meta: Record<string, string>): Record<string, string> {
@@ -94,8 +95,22 @@ export default class BaseB1505 {
           parsedMeta.SetupTitle,
         meta: parsedMeta,
       });
-      for (const calculation of this.calculations) {
-        calculation(analysis);
+
+      for (const [name, calculation] of this.calculations) {
+        const spectrum = analysis.getXYSpectrum({
+          xLabel: this.xLabel,
+          yLabel: this.yLabel,
+        });
+        if (spectrum) {
+          const result = JSON.stringify(calculation(spectrum));
+          if (result) {
+            if (spectrum.meta) {
+              spectrum.meta[name] = result;
+            } else {
+              spectrum.meta = { [name]: result };
+            }
+          }
+        }
       }
       analyses.push(analysis);
     }

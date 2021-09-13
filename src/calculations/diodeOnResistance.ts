@@ -1,4 +1,4 @@
-import { Analysis } from 'common-spectrum';
+import { SpectrumType } from 'common-spectrum/lib/types';
 import SimpleLinearRegression from 'ml-regression-simple-linear';
 import fit from 'ml-savitzky-golay';
 
@@ -10,17 +10,10 @@ interface DiodeResult extends Result {
 }
 
 export function diodeOnResistance(
-  analysis: Analysis,
+  spectrum: SpectrumType,
   options: ResistanceOptions = {},
 ): DiodeResult | null {
-  const { delta = 1e-2, autoSave = false, fromIndex, toIndex } = options;
-  const spectrum = analysis.getXYSpectrum({
-    xLabel: 'Vd',
-    xUnits: 'V',
-    yLabel: 'Id_dens',
-    yUnits: 'A/mm',
-  });
-  if (!spectrum) return null;
+  const { delta = 1e-2, fromIndex, toIndex } = options;
 
   const x = spectrum.variables.x.data as number[];
   const dx = Math.abs(x[0] - x[1]);
@@ -67,13 +60,5 @@ export function diodeOnResistance(
     onVoltage: Von.x,
   };
 
-  if (autoSave) {
-    const stringResp = JSON.stringify(response);
-    if (!spectrum.meta) {
-      spectrum.meta = { resistanceOn: stringResp };
-    } else {
-      spectrum.meta.resistanceOn = stringResp;
-    }
-  }
   return response;
 }
