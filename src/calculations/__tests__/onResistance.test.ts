@@ -12,9 +12,19 @@ describe('Ron transistor', () => {
       readFileSync(join(__dirname, filename), 'latin1'),
     );
     for (const analysis of analyses) {
-      const res = transistorOnResistance(analysis);
-      expect(res?.resistanceOn).toBeCloseTo(20.49, 2);
-      expect(res?.score.r2).toBeCloseTo(0.977, 2);
+      const spectrum = analysis.getXYSpectrum({
+        xLabel: 'Vd',
+        xUnits: 'V',
+        yLabel: 'Id_dens',
+        yUnits: 'A/mm',
+      });
+      if (spectrum) {
+        const res = transistorOnResistance(spectrum);
+        expect(res?.resistanceOn).toBeCloseTo(20.49, 2);
+        expect(res?.score.r2).toBeCloseTo(0.977, 2);
+      } else {
+        expect(spectrum).not.toBeNull();
+      }
     }
   });
 
@@ -45,11 +55,21 @@ describe('Ron diode', () => {
       readFileSync(join(__dirname, filename), 'latin1'),
     );
     for (const analysis of analyses) {
-      const res = diodeOnResistance(analysis);
-      expect(res?.resistanceOn).toBeCloseTo(20.819, 2);
-      expect(res?.score.r2).toBeCloseTo(0.992, 2);
-      expect(res?.forwardVoltage).toBeCloseTo(3.05, 2);
-      expect(res?.onVoltage).toBeCloseTo(0, 2);
+      const spectrum = analysis.getXYSpectrum({
+        xLabel: 'Vd',
+        xUnits: 'V',
+        yLabel: 'Id_dens',
+        yUnits: 'A/mm',
+      });
+      if (spectrum) {
+        const res = diodeOnResistance(spectrum);
+        expect(res?.resistanceOn).toBeCloseTo(20.819, 2);
+        expect(res?.score.r2).toBeCloseTo(0.992, 2);
+        expect(res?.forwardVoltage).toBeCloseTo(3.05, 2);
+        expect(res?.onVoltage).toBeCloseTo(0, 2);
+      } else {
+        expect(spectrum).not.toBeNull();
+      }
     }
   });
 

@@ -7,7 +7,6 @@ export interface Result {
   fromIndex: number;
 }
 export interface ResistanceOptions {
-  autoSave?: boolean;
   delta?: number;
   fromIndex?: number;
   toIndex?: number;
