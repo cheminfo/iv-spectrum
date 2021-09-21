@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.15.0](https://www.github.com/cheminfo/iv-spectrum/compare/v0.14.1...v0.15.0) (2021-09-21)
+
+
+### Features
+
+* allows to enforce limits ([87d1ebf](https://www.github.com/cheminfo/iv-spectrum/commit/87d1ebfbde3346a1f4eb23d0ad4bbcc86621c428))
+* allows to save response on metadata ([11aca26](https://www.github.com/cheminfo/iv-spectrum/commit/11aca2683f8ec1b04621c196c42c079f223a30a5))
+* calculate on resistance ([0efb44b](https://www.github.com/cheminfo/iv-spectrum/commit/0efb44b900edbec03ab5df84295a6f0d62e50f10)), closes [#47](https://www.github.com/cheminfo/iv-spectrum/issues/47)
+
+
+### Bug Fixes
+
+* renaming errors on tests ([0eab562](https://www.github.com/cheminfo/iv-spectrum/commit/0eab562eabbfb6eb1f23be951650a43570b97dfe))
+
 ### [0.14.1](https://www.github.com/cheminfo/iv-spectrum/compare/v0.14.0...v0.14.1) (2021-06-25)
 
 
