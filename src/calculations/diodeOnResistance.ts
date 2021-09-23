@@ -2,9 +2,9 @@ import { SpectrumType } from 'common-spectrum/lib/types';
 import SimpleLinearRegression from 'ml-regression-simple-linear';
 import fit from 'ml-savitzky-golay';
 
-import { ResistanceOptions, Result } from './types';
+import { ResistanceOptions, ResistanceResult } from './types';
 
-interface DiodeResult extends Result {
+interface DiodeResult extends ResistanceResult {
   forwardVoltage?: number;
   onVoltage?: number;
 }

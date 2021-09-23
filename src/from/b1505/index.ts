@@ -1,4 +1,5 @@
 import { diodeOnResistance } from '../../calculations/diodeOnResistance';
+import { thresholdVoltage } from '../../calculations/thresholdVoltage';
 import { transistorOnResistance } from '../../calculations/transistorOnResistance';
 
 import BaseB1505 from './BaseB1505';
@@ -30,7 +31,11 @@ export function fromBreakdown(text: string) {
 }
 
 export function fromTransfer(text: string) {
-  return new BaseB1505('Vg', 'Id_dens', 'log').parseText(text);
+  const analysis = new BaseB1505('Vg', 'Id_dens', 'log');
+  analysis.addCalculation('thresholdVoltage', (analysis) =>
+    thresholdVoltage(analysis),
+  );
+  return analysis.parseText(text);
 }
 
 export function fromOutput(text: string) {
