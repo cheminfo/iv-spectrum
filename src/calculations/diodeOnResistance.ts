@@ -2,16 +2,16 @@ import { SpectrumType } from 'common-spectrum/lib/types';
 import SimpleLinearRegression from 'ml-regression-simple-linear';
 import fit from 'ml-savitzky-golay';
 
-import { ResistanceOptions, ResistanceResult } from './types';
+import { SlopeOptions, SlopeResult } from './types';
 
-interface DiodeResult extends ResistanceResult {
+interface DiodeResult extends SlopeResult {
   forwardVoltage?: number;
   onVoltage?: number;
 }
 
 export function diodeOnResistance(
   spectrum: SpectrumType,
-  options: ResistanceOptions = {},
+  options: SlopeOptions = {},
 ): DiodeResult | null {
   const { delta = 1e-2, fromIndex, toIndex } = options;
 
@@ -52,7 +52,7 @@ export function diodeOnResistance(
   const regression = new SimpleLinearRegression(xRes, yRes);
   const score = regression.score(xRes, yRes);
   const response = {
-    resistanceOn: 1 / regression.slope,
+    slope: 1 / regression.slope,
     score,
     toIndex: xStart,
     fromIndex: xStart + xRes.length,

@@ -1,12 +1,12 @@
 import type { RegressionScore } from 'ml-regression-base';
 
-export interface ResistanceResult {
-  resistanceOn: number;
+export interface SlopeResult {
+  slope: number;
   score: RegressionScore;
   toIndex: number;
   fromIndex: number;
 }
-export interface ResistanceOptions {
+export interface SlopeOptions {
   delta?: number;
   fromIndex?: number;
   toIndex?: number;

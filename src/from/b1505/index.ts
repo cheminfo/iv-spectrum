@@ -1,4 +1,5 @@
 import { diodeOnResistance } from '../../calculations/diodeOnResistance';
+import { subthresholdSlope } from '../../calculations/subthresholdSlope';
 import { thresholdVoltage } from '../../calculations/thresholdVoltage';
 import { transistorOnResistance } from '../../calculations/transistorOnResistance';
 
@@ -32,25 +33,20 @@ export function fromBreakdown(text: string) {
 
 export function fromTransfer(text: string) {
   const analysis = new BaseB1505('Vg', 'Id_dens', 'log');
-  analysis.addCalculation('thresholdVoltage', (analysis) =>
-    thresholdVoltage(analysis),
-  );
+  analysis.addCalculation('thresholdVoltage', thresholdVoltage);
+  analysis.addCalculation('subthresholdSlope', subthresholdSlope);
   return analysis.parseText(text);
 }
 
 export function fromOutput(text: string) {
   const analysis = new BaseB1505('Vd', 'Id_dens', 'linear');
-  analysis.addCalculation('resistanceOn', (analysis) =>
-    transistorOnResistance(analysis),
-  );
+  analysis.addCalculation('resistanceOn', transistorOnResistance);
   return analysis.parseText(text);
 }
 
 export function fromIV(text: string) {
   const analysis = new BaseB1505('Vd', 'Id_dens', 'linear');
-  analysis.addCalculation('resistanceOn', (analysis) =>
-    diodeOnResistance(analysis),
-  );
+  analysis.addCalculation('resistanceOn', diodeOnResistance);
   return analysis.parseText(text);
 }
 
