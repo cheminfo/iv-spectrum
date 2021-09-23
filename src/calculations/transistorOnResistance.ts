@@ -2,12 +2,12 @@ import { SpectrumType } from 'common-spectrum/lib/types';
 import SimpleLinearRegression from 'ml-regression-simple-linear';
 import fit from 'ml-savitzky-golay';
 
-import { ResistanceOptions, ResistanceResult } from './types';
+import { SlopeOptions, SlopeResult } from './types';
 
 export function transistorOnResistance(
   spectrum: SpectrumType,
-  options: ResistanceOptions = {},
-): ResistanceResult | null {
+  options: SlopeOptions = {},
+): SlopeResult | null {
   const { delta = 1e-2, fromIndex, toIndex } = options;
 
   const x = spectrum.variables.x.data as number[];
@@ -37,7 +37,7 @@ export function transistorOnResistance(
   const regression = new SimpleLinearRegression(xRes, yRes);
   const score = regression.score(xRes, yRes);
   const response = {
-    resistanceOn: 1 / regression.slope,
+    slope: 1 / regression.slope,
     score,
     toIndex: xStart,
     fromIndex: xStart + xRes.length,
