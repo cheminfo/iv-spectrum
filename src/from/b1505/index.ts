@@ -30,6 +30,7 @@ export function fromB1505(text: string, options?: Options) {
 
 export function fromBreakdown(text: string) {
   const analysis = new BaseB1505('Vd', 'Id_dens', 'log');
+  analysis.addCalculation('thresholdVoltage', thresholdVoltage);
   return analysis.parseText(text);
 }
 
