@@ -1,13 +1,12 @@
 import { SpectrumType } from 'common-spectrum/lib/types';
-import SimpleLinearRegression from 'ml-regression-simple-linear';
 import fit from 'ml-savitzky-golay';
 
-import { SlopeOptions, SlopeResult } from './types';
+import { MedianSlopeResult, SlopeOptions } from './types';
 
 export function subthresholdSlope(
   spectrum: SpectrumType,
   options: SlopeOptions = {},
-): SlopeResult | null {
+): MedianSlopeResult | null {
   const { delta = 1e-2 } = options;
   let { fromIndex, toIndex } = options;
 
@@ -36,6 +35,7 @@ export function subthresholdSlope(
 
   let xRes = [];
   let yRes = [];
+  let firstSkip = false;
 
   for (
     let j = fromIndex ?? 0;
@@ -45,19 +45,19 @@ export function subthresholdSlope(
     if (Math.abs(dy[j + 1] - dy[j]) > delta) {
       xRes.push(x[j]);
       yRes.push(y[j]);
-    } else {
+    } else if (firstSkip) {
       toIndex = j;
+    } else {
+      firstSkip = true;
     }
   }
 
   // Checks convergence
   if (toIndex === undefined || fromIndex === undefined) return null;
 
-  const regression = new SimpleLinearRegression(xRes, yRes);
-  const score = regression.score(xRes, yRes);
+  const medianIndex = fromIndex + Math.floor((toIndex - fromIndex) / 2);
   const response = {
-    slope: 1 / regression.slope,
-    score,
+    medianSlope: 1 / dy[medianIndex],
     toIndex,
     fromIndex,
   };

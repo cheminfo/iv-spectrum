@@ -19,3 +19,9 @@ export interface ThresholdVoltageResult {
   index: number;
   value: number;
 }
+
+export interface MedianSlopeResult {
+  medianSlope: number;
+  toIndex: number;
+  fromIndex: number;
+}
