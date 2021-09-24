@@ -1,3 +1,4 @@
+import { capacitanceIntegral } from '../../calculations/capacitanceIntegral';
 import { diodeOnResistance } from '../../calculations/diodeOnResistance';
 import { subthresholdSlope } from '../../calculations/subthresholdSlope';
 import { thresholdVoltage } from '../../calculations/thresholdVoltage';
@@ -28,7 +29,8 @@ export function fromB1505(text: string, options?: Options) {
 }
 
 export function fromBreakdown(text: string) {
-  return new BaseB1505('Vd', 'Id_dens', 'log').parseText(text);
+  const analysis = new BaseB1505('Vd', 'Id_dens', 'log');
+  return analysis.parseText(text);
 }
 
 export function fromTransfer(text: string) {
@@ -51,9 +53,13 @@ export function fromIV(text: string) {
 }
 
 export function fromCapacitance(text: string) {
-  return new BaseB1505('Vd', 'C_dens', 'linear').parseText(text);
+  const analysis = new BaseB1505('Vd', 'C_dens', 'linear');
+  analysis.addCalculation('capacitanceIntegral', capacitanceIntegral);
+  return analysis.parseText(text);
 }
 
 export function fromMOSCapacitance(text: string) {
-  return new BaseB1505('VBias', 'C_dens', 'linear').parseText(text);
+  const analysis = new BaseB1505('VBias', 'C_dens', 'linear');
+  analysis.addCalculation('capacitanceIntegral', capacitanceIntegral);
+  return analysis.parseText(text);
 }
