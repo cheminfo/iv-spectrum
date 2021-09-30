@@ -81,10 +81,10 @@ export function getLabels(analysis: Analysis): Options {
     meta['Output.Graph.XAxis.Data'] || variables.x.label,
   );
   const [yLabel] = getDensities(
-    meta['Output.Graph.YAxis.Data'].split(',')[0].trim() || variables.y.label,
+    meta['Output.Graph.YAxis.Data']?.split(',')[0].trim() || variables.y.label,
   );
   const scale =
-    meta['Output.Graph.YAxis.Scale'].split(',')[0].trim().toLowerCase() ===
+    meta['Output.Graph.YAxis.Scale']?.split(',')[0].trim().toLowerCase() ===
     'linear'
       ? 'linear'
       : 'log';
