@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.16.0](https://www.github.com/cheminfo/iv-spectrum/compare/v0.15.0...v0.16.0) (2021-09-30)
+
+
+### Features
+
+* add threshold voltage to breakdown ([cd0bc31](https://www.github.com/cheminfo/iv-spectrum/commit/cd0bc31732cfd92bfd213a59157aa4c3cde20b89))
+* calculate vth ([148fcbf](https://www.github.com/cheminfo/iv-spectrum/commit/148fcbf64378c28118e358459dbe553ba1310ef4)), closes [#48](https://www.github.com/cheminfo/iv-spectrum/issues/48)
+* calculates integral on capacitance ([6529f98](https://www.github.com/cheminfo/iv-spectrum/commit/6529f985179a82e6d229e7879b95e9a12caaae3f)), closes [#50](https://www.github.com/cheminfo/iv-spectrum/issues/50)
+* subthreshold slope ([5b088e2](https://www.github.com/cheminfo/iv-spectrum/commit/5b088e2e420f5a0443e78b032bc1962bbdb44f0f)), closes [#49](https://www.github.com/cheminfo/iv-spectrum/issues/49)
+
+
+### Bug Fixes
+
+* labels couldn't be defined ([b0d2d1c](https://www.github.com/cheminfo/iv-spectrum/commit/b0d2d1c7cc22bb063f5ea58115fd9a42da7e7d9a))
+
 ## [0.15.0](https://www.github.com/cheminfo/iv-spectrum/compare/v0.14.1...v0.15.0) (2021-09-21)
 
 
