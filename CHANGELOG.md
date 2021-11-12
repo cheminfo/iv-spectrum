@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.16.1](https://www.github.com/cheminfo/iv-spectrum/compare/v0.16.0...v0.16.1) (2021-11-12)
+
+
+### Bug Fixes
+
+* subthreshold slope was taking much broader segment ([#56](https://www.github.com/cheminfo/iv-spectrum/issues/56)) ([5323e0c](https://www.github.com/cheminfo/iv-spectrum/commit/5323e0c59060c293c59b36c9487fcd9487fe4ab8)), closes [#5](https://www.github.com/cheminfo/iv-spectrum/issues/5)
+
 ## [0.16.0](https://www.github.com/cheminfo/iv-spectrum/compare/v0.15.0...v0.16.0) (2021-09-30)
 
 
