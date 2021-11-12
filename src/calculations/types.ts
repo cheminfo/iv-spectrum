@@ -22,12 +22,6 @@ export interface ThresholdVoltageResult {
   value: number;
 }
 
-export interface MedianSlopeResult {
-  medianSlope: number;
-  toIndex: number;
-  fromIndex: number;
-}
-
 export interface IntegralOptions {
   fromIndex?: number;
   toIndex?: number;

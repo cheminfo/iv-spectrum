@@ -1,13 +1,14 @@
 import { SpectrumType } from 'common-spectrum/lib/types';
+import SimpleLinearRegression from 'ml-regression-simple-linear';
 import fit from 'ml-savitzky-golay';
 
-import { MedianSlopeResult, SlopeOptions } from './types';
+import { SlopeResult, SlopeOptions } from './types';
 
 export function subthresholdSlope(
   spectrum: SpectrumType,
   options: SlopeOptions = {},
-): MedianSlopeResult | null {
-  const { delta = 1e-2 } = options;
+): SlopeResult | null {
+  const { delta = 0.1 } = options;
   let { fromIndex, toIndex } = options;
 
   const x = spectrum.variables.x.data as number[];
@@ -16,48 +17,35 @@ export function subthresholdSlope(
 
   const y = spectrum.variables.y.data.map((val) => Math.log10(val)) as number[];
   const dy = fit(y, dx, { derivative: 1 });
+  const dyThreshold = Math.max(...dy) * (1 - delta);
 
   if (fromIndex === undefined) {
-    let maxDiffIndex = 0;
-    let maxDiff = -1;
-    for (let i = 0; i < dy.length - 1; i++) {
-      const diff = Math.abs(dy[i] - dy[i + 1]);
-      if (diff > maxDiff) {
-        maxDiff = diff;
-        maxDiffIndex = i;
-      }
-    }
-
-    if (maxDiff !== -1) {
-      fromIndex = maxDiffIndex;
+    const limit = toIndex === undefined ? dy.length : toIndex;
+    for (let i = 0; i < limit && fromIndex === undefined; i++) {
+      if (dy[i] >= dyThreshold) fromIndex = i;
     }
   }
+  if (fromIndex === undefined) return null;
 
-  let xRes = [];
-  let yRes = [];
-  let firstSkip = false;
-
-  for (
-    let j = fromIndex ?? 0;
-    j < y.length - 1 && (toIndex === undefined || j < toIndex);
-    j++
-  ) {
-    if (Math.abs(dy[j + 1] - dy[j]) > delta) {
-      xRes.push(x[j]);
-      yRes.push(y[j]);
-    } else if (firstSkip) {
-      toIndex = j;
-    } else {
-      firstSkip = true;
+  if (toIndex === undefined) {
+    for (let i = dy.length - 1; i > fromIndex && toIndex === undefined; i--) {
+      if (dy[i] >= dyThreshold) toIndex = i;
     }
   }
+  if (toIndex === undefined) return null;
 
-  // Checks convergence
-  if (toIndex === undefined || fromIndex === undefined) return null;
+  let xRes: number[] = [];
+  let yRes: number[] = [];
+  for (let i = fromIndex; i < toIndex; i++) {
+    xRes.push(x[i]);
+    yRes.push(y[i]);
+  }
 
-  const medianIndex = fromIndex + Math.floor((toIndex - fromIndex) / 2);
+  const regression = new SimpleLinearRegression(xRes, yRes);
+  const score = regression.score(xRes, yRes);
   const response = {
-    medianSlope: 1 / dy[medianIndex],
+    slope: 1 / regression.slope,
+    score,
     toIndex,
     fromIndex,
   };
